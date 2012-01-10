@@ -50,33 +50,6 @@ module loader scripts to your own application lib directory.
    }
 
 
-### Standard Loader
-
-Script: *lib/lumbar-loader-standard.js*
-
-The standard loader provides generic module loading utilizing tag
-injection and normal browser caching.
-
-This is ideal for development environments as well as environments
-whose mobile users are a lesser percentage of the user base.
-
-
-### Local Storage Loader
-
-Script: *lib/lumbar-loader-localstorage.js*
-
-The local storage loader provides an additional caching layer on top
-of the core browser caching techniques. Under some environments,
-particularly mobile, this may prove useful as the normal browser
-caching routines may be limited due to device restrictions.
-
-This technique does have some drawbacks in that it limits resource
-usage to resources available on the local domain only (or exposed via
-CORS in supporting environments) and it creates a bit of pain when
-attempting to debug as resources must be manually evicted from the
-**localStorage** cache to test changes.
-
-
 ## Module Loader Implementations
 
 ### Standard Loader
