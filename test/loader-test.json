@@ -1,0 +1,59 @@
+{
+  "application": {
+    "name": "LoaderTest",
+    "module": "base"
+  },
+  "modules": {
+    "loader-standard": {
+      "topLevelName": "Loader",
+      "scripts": [
+        {"src": "../../example/lib/script.js", "global": true},
+        {"src": "../lumbar-loader.js"},
+        {"src": "../lumbar-loader-standard.js"},
+        {"src": "../lumbar-loader-events.js"},
+        {"module-map": true},
+        "js/loader-test.js"
+      ]
+    },
+    "loader-local": {
+      "topLevelName": "Loader",
+      "scripts": [
+        {"src": "../local-cache.js", "global": true},
+        {"src": "../lumbar-loader.js"},
+        {"src": "../lumbar-loader-localstorage.js"},
+        {"src": "../lumbar-loader-events.js"},
+        {"module-map": true},
+        "js/loader-test.js"
+      ]
+    },
+    "base": {
+      "scripts": [
+        {"src": "../../example/lib/zepto.js", "global": true},
+        {"src": "../../example/lib/underscore.js", "global": true},
+        {"src": "../../example/lib/backbone.js", "global": true},
+
+        "../lumbar-loader-backbone.js",
+        "js/base.js"
+      ],
+      "styles": [
+        "styles/base.css"
+      ]
+    },
+    "module1": {
+      "routes": {
+        "module1": "module1"
+      },
+      "scripts": [
+        "js/module1.js"
+      ],
+      "styles": [
+        "styles/module1.css"
+      ]
+    },
+    "moduleNoRoute": {
+      "routes": {
+        "moduleNoRoute": "module1"
+      }
+    }
+  }
+}
