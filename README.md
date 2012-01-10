@@ -155,10 +155,10 @@ This mixin adds the following backbone events to the loader object:
 ## Testing
 The loader can be tested using
 
-    cd loader/test
+    cd test
     lumbar build loader-test.json build
 
-This generates the *loader/test/build/index-local.html* and *loader/test/build/index-standard.html*
+This generates the *test/build/index-local.html* and *test/build/index-standard.html*
 QUnit suites which can then be loaded directly in the browser environment under test. Note that
 these might not operate correctly if loaded via the **file://** protocol due to security restrictions.
 
