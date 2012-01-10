@@ -7,7 +7,7 @@
     "loader-standard": {
       "topLevelName": "Loader",
       "scripts": [
-        {"src": "../../example/lib/script.js", "global": true},
+        {"src": "lib/script.js", "global": true},
         {"src": "../lumbar-loader.js"},
         {"src": "../lumbar-loader-standard.js"},
         {"src": "../lumbar-loader-events.js"},
@@ -28,9 +28,9 @@
     },
     "base": {
       "scripts": [
-        {"src": "../../example/lib/zepto.js", "global": true},
-        {"src": "../../example/lib/underscore.js", "global": true},
-        {"src": "../../example/lib/backbone.js", "global": true},
+        {"src": "lib/zepto.js", "global": true},
+        {"src": "lib/underscore.js", "global": true},
+        {"src": "lib/backbone.js", "global": true},
 
         "../lumbar-loader-backbone.js",
         "js/base.js"
