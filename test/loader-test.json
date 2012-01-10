@@ -37,6 +37,12 @@
       ],
       "styles": [
         "styles/base.css"
+      ],
+      "static": [
+        "lib/qunit.css",
+        "lib/qunit.js",
+        {"src": "static/index-local.html", "dest": "index-local.html"},
+        {"src": "static/index-standard.html", "dest": "index-standard.html"}
       ]
     },
     "module1": {
