@@ -21,9 +21,9 @@ feature mixin (discussed later).
 
 For manual initiation:
 
-   Loader.loader.loadModule('base', function() {
-     Application.init();
-   });
+    Loader.loader.loadModule('base', function() {
+      Application.init();
+    });
 
 
 ## Installing a Module Loader
@@ -36,19 +36,18 @@ You must include the core module loader script and the module loader
 impl script.  The following example assumes that you have copied the
 module loader scripts to your own application lib directory.
 
-   {
-     "modules": {
-       "base": {
-         "scripts": [
-           ...
-           "lib/lumbar-loader.js",
-           "lib/lumbar-loader-{implementation}.js",
-           {"module-map": true}
-         ]
-       }
-     }
-   }
-
+    {
+      "modules": {
+        "base": {
+          "scripts": [
+            ...
+            "lib/lumbar-loader.js",
+            "lib/lumbar-loader-{implementation}.js",
+            {"module-map": true}
+          ]
+        }
+      }
+    }
 
 ## Module Loader Implementations
 
