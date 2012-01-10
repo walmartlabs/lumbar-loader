@@ -61,6 +61,8 @@ injection and normal browser caching.
 This is ideal for development environments as well as environments
 whose mobile users are a lesser percentage of the user base.
 
+Dependencies: `{"src": "lib/script.js", "global": true}`
+
 
 ### Local Storage Loader
 
@@ -76,6 +78,8 @@ usage to resources available on the local domain only (or exposed via
 CORS in supporting environments) and it creates a bit of pain when
 attempting to debug as resources must be manually evicted from the
 **localStorage** cache to test changes.
+
+Dependencies: `{"src": "lib/local-cache.js", "global": true}`
 
 
 #### Loader Module
