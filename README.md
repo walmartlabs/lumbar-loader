@@ -94,29 +94,29 @@ as *topLevelName*.
 
 *lumbar.json*:
 
-   {
-     "modules": {
-       "loader": {
-         "topLevelName": "Loader",
-         "scripts": [
-           ...
-           "lib/lumbar-loader.js",
-           "lib/lumbar-loader-{implementation}.js",
-           {"module-map": true},
-           "js/load.js"
-         ]
-       },
-       "base": {
-         ...
-       }
-     }
-   }
+    {
+      "modules": {
+        "loader": {
+          "topLevelName": "Loader",
+          "scripts": [
+            ...
+            "lib/lumbar-loader.js",
+            "lib/lumbar-loader-{implementation}.js",
+            {"module-map": true},
+            "js/load.js"
+          ]
+        },
+        "base": {
+          ...
+        }
+      }
+    }
 
 *js/load.js*:
 
-   Loader.loader.loadModule('base', function() {
-     Application.init();
-   });
+    Loader.loader.loadModule('base', function() {
+      Application.init();
+    });
 
 Where the base module implements the `Application` module and exports an initializer
 named `init`.
