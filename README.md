@@ -1,11 +1,12 @@
-# Module Loader
+# Lumbar Module Loader
 
 ## What is it?
 The Module Loader is responsible for dynamically loading all module resources.
 
-While not required to use lumbar, multiple client-side library have been developed to facilitate
-loading both javascript and css assets for a given module. Each has their own advantages and
-performance ramifications. The ideal method depends very much on the environment that is in use.
+While not required to use [lumbar](https://github.com/walmartlabs/lumbar), multiple client-side library
+have been developed to facilitate loading both javascript and css assets for a given module. Each has
+their own advantages and performance ramifications. The ideal method depends very much on the environment
+that is in use.
 
 Regardless of the library used, both support the same features and may be augmented with additional
 mixins to provide additional functionality.
