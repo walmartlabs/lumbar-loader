@@ -4,6 +4,15 @@
     "module": "base"
   },
   "modules": {
+    "qunit": {
+      "topLevelName": "Loader",
+      "scripts": [
+        {"src": "lib/qunit.js", "global": true}
+      ],
+      "styles": [
+        "lib/qunit.css"
+      ]
+    },
     "loader-standard": {
       "topLevelName": "Loader",
       "scripts": [
@@ -39,10 +48,8 @@
         "styles/base.css"
       ],
       "static": [
-        "lib/qunit.css",
-        "lib/qunit.js",
-        {"src": "static/index-local.html", "dest": "index-local.html"},
-        {"src": "static/index-standard.html", "dest": "index-standard.html"}
+        {"src": "static/index-local.html", "dest": "index-local.html", "root": true, "update-externals": true},
+        {"src": "static/index-standard.html", "dest": "index-standard.html", "root": true, "update-externals": true},
       ]
     },
     "module1": {
