@@ -1,5 +1,5 @@
 var lumbarLoader = exports.loader = {
-  loadPrefix: lumbarLoadPrefix || '',
+  loadPrefix: typeof lumbarLoadPrefix === 'undefined' ? '' : lumbarLoadPrefix,
 
   loadModule: function(moduleName, callback) {
     var loadCount = 0,
