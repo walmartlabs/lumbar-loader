@@ -49,9 +49,9 @@
         "styles/base.css"
       ],
       "static": [
-        {"src": "static/index-local.html", "dest": "index-local.html", "root": true, "update-externals": true},
-        {"src": "static/index-standard.html", "dest": "index-standard.html", "root": true, "update-externals": true},
-        {"src": "static/index-standard.html", "dest": "index-nested.html", "update-externals": true}
+        {"src": "static/index-local.html", "dest": "index-local.html", "root": true},
+        {"src": "static/index-standard.html", "dest": "index-standard.html", "root": true},
+        {"src": "static/index-standard.html", "dest": "index-nested.html"}
       ]
     },
     "module1": {
