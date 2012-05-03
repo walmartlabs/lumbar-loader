@@ -228,6 +228,7 @@ Test.prototype = {
 	},
 
 	queue: function() {
+		id( "qunit-testresult" ).innerHTML = 'Running';
 		var test = this;
 		synchronize(function() {
 			test.init();
