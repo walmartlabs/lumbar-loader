@@ -92,4 +92,6 @@ setTimeout(function(){
     });
     Backbone.history.navigate('moduleNoRoute', true);
   });
+
+  document.getElementById('lumbar-modules-loaded').innerHTML = 'modules loaded';
 }, 500);
