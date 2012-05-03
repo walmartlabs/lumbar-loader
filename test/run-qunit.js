@@ -76,6 +76,7 @@ page.open(phantom.args[0], function(status){
 
                 var el = document.getElementById('qunit-testresult');
                 try {
+                    console.log(el.innerText);
                     return el.getElementsByClassName('failed')[0].innerHTML;
                 } catch (e) { }
                 return 10000;
