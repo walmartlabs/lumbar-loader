@@ -56,7 +56,6 @@ page.open(phantom.args[0], function(status){
             return page.evaluate(function(){
                 var el = document.getElementById('qunit-testresult');
                 if (el && el.innerText.match('completed')) {
-                  console.log(el.outerHTML);
                     var el = document.getElementById('lumbar-modules-loaded');
                     if (el && el.innerText.match('modules loaded')) {
                         return true;
@@ -76,7 +75,6 @@ page.open(phantom.args[0], function(status){
                 }
 
                 var el = document.getElementById('qunit-testresult');
-                console.log(el.innerText);
                 try {
                     return el.getElementsByClassName('failed')[0].innerHTML;
                 } catch (e) { }
