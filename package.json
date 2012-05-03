@@ -23,7 +23,9 @@
     "lumbar": "~1.0"
   },
   "scripts": {
+    "prestart": "rm -rf build/*; node_modules/.bin/lumbar build test/loader-test.json ./build",
     "start": "node test/server.js build 8083",
+
     "pretest": "rm -rf build/*; node_modules/.bin/lumbar build test/loader-test.json ./build",
     "test": "test/test.sh"
   }
