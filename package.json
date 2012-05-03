@@ -1,0 +1,30 @@
+{
+  "author": "Kevin Decker <kpdecker@gmail.com> (http://incaseofstairs.com)",
+  "name": "lumbar-loader",
+  "description": "Lumbar module loader",
+  "keywords": [
+    "lumbar",
+    "loader",
+    "build",
+    "module",
+    "mobile",
+    "performance"
+  ],
+  "version": "1.0.0",
+  "repository": {
+    "url": "git://github.com/walmartlabs/lumbar-loader.git"
+  },
+  "engines": {
+    "node": ">=0.4.2"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "connect": "*",
+    "lumbar": "~1.0"
+  },
+  "scripts": {
+    "start": "node test/server.js build 8083",
+    "pretest": "rm -rf build/*; node_modules/.bin/lumbar build test/loader-test.json ./build",
+    "test": "test/test.sh"
+  }
+}
