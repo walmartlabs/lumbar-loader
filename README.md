@@ -1,5 +1,7 @@
 # Lumbar Module Loader
 
+[![Build Status](https://secure.travis-ci.org/walmartlabs/lumbar-loader.png?branch=master)](http://travis-ci.org/walmartlabs/lumbar-loader)
+
 ## What is it?
 The Module Loader is responsible for dynamically loading all module resources.
 
@@ -158,15 +160,12 @@ This mixin adds the following backbone events to the loader object:
 ### Module Load Performance Mixin
 
 ## Testing
-The loader can be tested using
 
-    cd test
-    lumbar build loader-test.json build
+The loader can be tested using phantom js via `npm test`. This assumes that `phantomjs` is available on
+the current path and that `npm start` server is running in the background.
 
-This generates the *test/build/index-local.html*, *test/build/index-standard.html*, and
-*test/build/web/index-nested.html*
-QUnit suites which can then be loaded directly in the browser environment under test. Note that
-these might not operate correctly if loaded via the **file://** protocol due to security restrictions.
+Real browser testing can be done by running `npm start` and hitting `http://localhost:8083/index-standard.html`
+and `http://localhost:8083/index-local.html` directly in the browser.
 
 ## Supported Browsers
 
