@@ -8,7 +8,9 @@
     "qunit": {
       "topLevelName": "Loader",
       "scripts": [
-        {"src": "lib/qunit.js", "global": true}
+        {"src": "lib/qunit.js"},
+        {"src": "lib/sinon.js"},
+        {"src": "lib/sinon-qunit.js"}
       ],
       "styles": [
         "lib/qunit.css"
