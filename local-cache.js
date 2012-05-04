@@ -1,12 +1,11 @@
-this.LocalCache = (function() {
+this.LocalCache = (function constructor(localStorage) {
   var MS_IN_HOUR = 3600000,   // 60*60*1000
       MS_IN_DAY = 24*MS_IN_HOUR,
       PREFIX = 'LocalCache_',
       EXPIRES_KEY = 'Expires_',
       ACCESS_KEY = 'Access_',
-      EXPIRES_REGEX = /^LocalCache_Expires_.*/;
-
-  var localStorage = window.localStorage;
+      EXPIRES_REGEX = /^LocalCache_Expires_.*/,
+      ALL_REGEX = /^LocalCache_.*/;
 
   var dailyExpiration = 10*MS_IN_HOUR;   // Default to 2am PST
 
@@ -19,12 +18,19 @@ this.LocalCache = (function() {
     },
     HOUR: function() {
       return (Math.floor(Date.now()/MS_IN_HOUR)+1)*MS_IN_HOUR;
+    },
+    hours: function(numHours) {
+      return function() {
+        return Date.now() + (MS_IN_HOUR * numHours);
+      }
     }
   };
 
   function setKey(key, data, ttl) {
-    localStorage.setItem(PREFIX+EXPIRES_KEY+key, ttl());
-    localStorage.setItem(PREFIX+ACCESS_KEY+key, Date.now());
+    if (ttl) {
+      localStorage.setItem(PREFIX+EXPIRES_KEY+key, ttl());
+      localStorage.setItem(PREFIX+ACCESS_KEY+key, Date.now());
+    }
     localStorage.setItem(PREFIX+key, data);
   }
   function removeKey(key) {
@@ -76,27 +82,29 @@ this.LocalCache = (function() {
   setInterval(flushExpired, MS_IN_HOUR);
 
   return {
+    // Exposed for unit testing purposes
+    constructor: constructor,
+
     TTL: TTL,
 
     store: function(key, data, ttl) {
-      if (!ttl) {
-        return;
-      }
-
       // Iterate until we can store the data, we block out the cache, or we
       // hit an exception that is not a quote exception
       var cullList;
       while (!cullList || cullList.length) {
+        cullList && cullList.shift();
+
         try {
           // Attempt to set once before loading the whole cache
           setKey(key, data, ttl);
-          return;
+          return true;
         } catch (err) {
           // If quota drop the things that are closest to expiration out of the cache
           if (err.name === 'QUOTA_EXCEEDED_ERR') {
             cullList = cullList || loadByAccess();
-            removeKey(cullList[0].key);
-            cullList.shift();
+            if (cullList.length) {
+              removeKey(cullList[0].key);
+            }
           } else {
             throw err;
           }
@@ -105,30 +113,37 @@ this.LocalCache = (function() {
     },
     get: function(key) {
       var expires = localStorage.getItem(PREFIX+EXPIRES_KEY+key) || 0;
-      if (parseInt(expires, 10) < Date.now()) {
+      if (expires && parseInt(expires, 10) < Date.now()) {
         // Kill anything that may have expired
-        expires && removeKey(key);
+        removeKey(key);
         return;
       }
 
-      localStorage.setItem(PREFIX+ACCESS_KEY+key, Date.now());
+      if (expires) {
+        try {
+          localStorage.setItem(PREFIX+ACCESS_KEY+key, Date.now());
+        } catch (err) {
+          /* NOP: This may occur in private browsing mode... Playing it safe in case cached data surivives there. */
+        }
+      }
       return localStorage.getItem(PREFIX+key);
     },
     remove: function(key) {
       removeKey(key);
     },
-    reset: function() {
+    reset: function(hard) {
       var toRemove = [];
 
       for (var i = 0, len = localStorage.length; i < len; i++) {
         var key = localStorage.key(i);
-        if (EXPIRES_REGEX.test(key)) {
-          toRemove.push(key.substring(PREFIX.length + EXPIRES_KEY.length));
+        if ((hard ? ALL_REGEX : EXPIRES_REGEX).test(key)) {
+          toRemove.push(key.substring(PREFIX.length + (!hard ? EXPIRES_KEY.length : 0)));
         }
       }
 
       // Actually remove everything
       toRemove.forEach(removeKey);
-    }
+    },
+    flushExpired: flushExpired
   };
-})();
+})(localStorage);
