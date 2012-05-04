@@ -38,6 +38,7 @@
         {"src": "../lumbar-loader-events.js"},
         {"module-map": true},
         "js/loader-test.js",
+        "js/local-storage-errorhandling.js",
         "js/local-cache.js"
       ]
     },
