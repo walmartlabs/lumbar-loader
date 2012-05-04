@@ -67,4 +67,24 @@ setTimeout(function(){
     equal(LocalCache.store.callCount, 0);
   });
 
+  test('subsequent requests are made after errors', function() {
+    expect(6);
+
+    var self = this;
+    Loader.loader.loadModule('moduleNoRoute', function(err) {
+      equal(err, 'connection');
+
+      Loader.loader.loadModule('moduleNoRoute', function(err) {
+        equal(err, undefined);
+        equal(window.foo, 'bar');
+      });
+
+      equal(self.requests.length, 2);
+      self.requests[1].respond(200, {}, 'window.foo = "bar";');
+      equal(LocalCache.store.callCount, 1);
+    });
+
+    equal(this.requests.length, 1);
+    this.requests[0].respond(0, {}, '');
+  });
 }, 100);

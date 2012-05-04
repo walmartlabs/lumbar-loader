@@ -1,5 +1,5 @@
 lumbarLoader.loadJS = function(moduleName, callback) {
-  var loaded = loadResources(moduleName, 'js', function(href) {
+  return loadResources(moduleName, 'js', callback, function(href, callback) {
     loadViaXHR(href, function(err, data) {
       if (!err && data) {
         try {
@@ -14,19 +14,17 @@ lumbarLoader.loadJS = function(moduleName, callback) {
       callback(err ? 'connection' : 'javascript');
     });
     return 1;
-  });
-  return loaded.length;
+  }).length;
 };
 lumbarLoader.loadCSS = function(moduleName, callback) {
-  var loaded = loadResources(moduleName, 'css', function(href) {
+  return loadResources(moduleName, 'css', callback, function(href) {
     loadViaXHR(href, function(err, data) {
       data && exports.loader.loadInlineCSS(data);
       callback(err ? 'connecion' : undefined);
       return !err;
     });
     return 1;
-  });
-  return loaded.length;
+  }).length;
 };
 
 function loadViaXHR(href, callback) {

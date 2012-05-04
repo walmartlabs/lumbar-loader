@@ -34,7 +34,7 @@ var lumbarLoadedResources = {},
       js: 'src',
       css: 'href'
     };
-function loadResources(moduleName, field, create) {
+function loadResources(moduleName, field, callback, create) {
   var module = moduleName === 'base' ? lumbarLoader.map.base : lumbarLoader.modules[moduleName], // Special case for the base case
       loaded = [],
       attr = fieldAttr[field];
@@ -47,7 +47,12 @@ function loadResources(moduleName, field, create) {
     var object = field[i];
     var href = checkLoadResource(object, attr);
     if (href && !lumbarLoadedResources[href]) {
-      var el = create(href);
+      var el = create(href, function(err) {
+        if (err === 'connection') {
+          lumbarLoadedResources[href] = false;
+        }
+        callback(err);
+      });
       lumbarLoadedResources[href] = true;
       if (el && el.nodeType === 1) {
         document.body.appendChild(el);
