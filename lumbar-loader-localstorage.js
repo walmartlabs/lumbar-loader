@@ -1,5 +1,5 @@
 lumbarLoader.loadJS = function(moduleName, callback) {
-  var loaded = loadResources(moduleName, 'js', 'data-src', function(href) {
+  var loaded = loadResources(moduleName, 'js', function(href) {
     loadViaXHR(href, function(data) {
       if (data) {
         window.eval(data);
@@ -11,7 +11,7 @@ lumbarLoader.loadJS = function(moduleName, callback) {
   return loaded.length;
 };
 lumbarLoader.loadCSS = function(moduleName, callback) {
-  var loaded = loadResources(moduleName, 'css', 'data-href', function(href) {
+  var loaded = loadResources(moduleName, 'css', function(href) {
     loadViaXHR(href, function(data) {
       data && exports.loader.loadInlineCSS(data);
       callback();

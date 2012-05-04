@@ -1,4 +1,4 @@
-module.exports.initBackboneLoader = function(loaderModule) {
+module.exports.initBackboneLoader = function(loaderModule, failure) {
   var lumbarLoader = (loaderModule || module.exports).loader;
 
   lumbarLoader.loaded = {};
@@ -19,8 +19,8 @@ module.exports.initBackboneLoader = function(loaderModule) {
       return function() {
         // if we've already tried to load this module, we've got a problem
         if (lumbarLoader.loaded[moduleName]) {
-          if (typeof console != 'undefined') {
-            console.error('module was not loaded properly (no route replacement): ' + moduleName);
+          if (failure) {
+            failure('module was not loaded properly (no route replacement): ' + moduleName);
           }
           return;
         }

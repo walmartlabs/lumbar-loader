@@ -9,6 +9,7 @@ var lumbarLoader = exports.loader = {
       loadCount++;
       if (allInit && loadCount >= expected) {
         callback();
+        lumbarLoader.loadComplete && lumbarLoader.loadComplete(moduleName);
       }
     }
 
@@ -28,19 +29,26 @@ var lumbarLoader = exports.loader = {
   }
 };
 
-function loadResources(moduleName, field, attr, create) {
+var lumbarLoadedResources = {},
+    fieldAttr = {
+      js: 'src',
+      css: 'href'
+    };
+function loadResources(moduleName, field, create) {
   var module = moduleName === 'base' ? lumbarLoader.map.base : lumbarLoader.modules[moduleName], // Special case for the base case
-      field = module[field] || [],
-      loaded = [];
+      loaded = [],
+      attr = fieldAttr[field];
+  field = module[field] || [];
 
-  if (Array.isArray ? !Array.isArray(field) :field.toString() !== '[object Array]') {
+  if (Array.isArray ? !Array.isArray(field) : Object.prototype.toString.call(field) !== '[object Array]') {
     field = [field];
   }
   for (var i = 0, len = field.length; i < len; i++) {
     var object = field[i];
     var href = checkLoadResource(object, attr);
-    if (href) {
+    if (href && !lumbarLoadedResources[href]) {
       var el = create(href);
+      lumbarLoadedResources[href] = true;
       if (el && el.nodeType === 1) {
         document.body.appendChild(el);
       }
@@ -50,7 +58,8 @@ function loadResources(moduleName, field, attr, create) {
   return loaded;
 }
 
-var devicePixelRatio = window.devicePixelRatio || 1;
+var devicePixelRatio = parseFloat(sessionStorage.getItem('dpr') || window.devicePixelRatio || 1);
+exports.devicePixelRatio = devicePixelRatio;
 function checkLoadResource(object, attr) {
   var href = lumbarLoader.loadPrefix + (object.href || object);
   if ((!object.maxRatio || devicePixelRatio < object.maxRatio) && (!object.minRatio || object.minRatio <= devicePixelRatio)) {
