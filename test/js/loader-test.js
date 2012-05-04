@@ -11,14 +11,14 @@ function getSelector(sheetNum, ruleNum) {
 setTimeout(function(){
   window.module("Base Loader");
   asyncTest('load base', function() {
-    expect(5);
+    expect(6);
 
-    // TODO : Implement a test to ensure that any styles associated with the loader module are loaded
     equal(undefined, window.LoaderTest, 'Core application module is not loaded');
-    Loader.loader.loadModule('base', function() {
+    Loader.loader.loadModule('base', function(err) {
       notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
       equal(document.styleSheets.length, 2, 'Core application stylesheet is loaded');
       equal(getSelector(1, 0), '.base', 'stylesheet is expected');
+      equal(err, undefined);
 
       LoaderTest.init(module.exports);
 
