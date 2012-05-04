@@ -87,4 +87,25 @@ setTimeout(function(){
     equal(this.requests.length, 1);
     this.requests[0].respond(0, {}, '');
   });
+
+  test('subsequent requests are ignored after success', function() {
+    expect(7);
+
+    var self = this;
+    Loader.loader.loadModule('moduleNoRoute', function(err) {
+      equal(err, undefined);
+      equal(window.foo, 1);
+
+      Loader.loader.loadModule('moduleNoRoute', function(err) {
+        equal(err, undefined);
+        equal(window.foo, 1);
+      });
+
+      equal(self.requests.length, 1);
+    });
+
+    equal(this.requests.length, 1);
+    this.requests[0].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
+    equal(LocalCache.store.callCount, 1);
+  });
 }, 100);
