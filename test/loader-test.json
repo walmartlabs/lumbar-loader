@@ -26,6 +26,7 @@
         {"src": "../lumbar-loader-events.js"},
         {"module-map": true},
         "js/loader-test.js",
+        "js/standard-errorhandling.js",
         "js/local-cache.js"
       ]
     },
@@ -69,6 +70,18 @@
       ],
       "styles": [
         "styles/module1.css"
+      ]
+    },
+    "module-subsequent": {
+      "topLevelName": "ModuleDelay",
+      "scripts": [
+        "js/delay.js"
+      ]
+    },
+    "module-concurrent": {
+      "topLevelName": "ModuleDelay",
+      "scripts": [
+        "js/delay.js"
       ]
     },
     "moduleNoRoute": {
