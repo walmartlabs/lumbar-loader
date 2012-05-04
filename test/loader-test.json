@@ -20,11 +20,13 @@
       "topLevelName": "Loader",
       "scripts": [
         {"src": "lib/script.js", "global": true},
+        {"src": "../local-cache.js", "global": true},
         {"src": "../lumbar-loader.js"},
         {"src": "../lumbar-loader-standard.js"},
         {"src": "../lumbar-loader-events.js"},
         {"module-map": true},
-        "js/loader-test.js"
+        "js/loader-test.js",
+        "js/local-cache.js"
       ]
     },
     "loader-local": {
@@ -35,7 +37,8 @@
         {"src": "../lumbar-loader-localstorage.js"},
         {"src": "../lumbar-loader-events.js"},
         {"module-map": true},
-        "js/loader-test.js"
+        "js/loader-test.js",
+        "js/local-cache.js"
       ]
     },
     "base": {
