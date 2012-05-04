@@ -1,13 +1,22 @@
+var loadedModules = [];
 var lumbarLoader = exports.loader = {
   loadPrefix: typeof lumbarLoadPrefix === 'undefined' ? '' : lumbarLoadPrefix,
 
   loadModule: function(moduleName, callback) {
+    if (loadedModules.indexOf(moduleName) !== -1) {
+      return callback();
+    }
+    loadedModules.push(moduleName);
     var loadCount = 0,
         expected = 1,
         allInit = false;
     function complete() {
       loadCount++;
       if (allInit && loadCount >= expected) {
+        var moduleInfo = lumbarLoader.modules[moduleName];
+        if (moduleInfo && moduleInfo.preload) {
+          preloadModules(moduleInfo.preload);
+        }
         callback();
         lumbarLoader.loadComplete && lumbarLoader.loadComplete(moduleName);
       }
@@ -56,6 +65,17 @@ function loadResources(moduleName, field, create) {
     }
   }
   return loaded;
+}
+
+function preloadModules(modules) {
+  var moduleList = _.clone(modules);
+  function preloadModule() {
+    if (moduleList.length) {
+      var moduleName = moduleList.shift();
+      lumbarLoader.loadModule(moduleName, preloadModule, {silent: true});
+    }
+  }
+  preloadModule();
 }
 
 var devicePixelRatio = parseFloat(sessionStorage.getItem('dpr') || window.devicePixelRatio || 1);

@@ -6,7 +6,7 @@ module.exports.initBackboneLoader = function(loaderModule, failure) {
   lumbarLoader.loadModule = function(moduleName, callback) {
     // Prevent infinite loop if a module is declared incorrectly
     lumbarLoader.loaded[moduleName] = true;
-    baseLoadModule(moduleName, callback);
+    baseLoadModule.apply(this, arguments);
   };
 
   // Setup backbone route loading

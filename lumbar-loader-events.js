@@ -8,11 +8,16 @@
   }
 
   var baseLoadModule = lumbarLoader.loadModule;
-  lumbarLoader.loadModule = function(moduleName, callback) {
-    lumbarLoader.trigger && lumbarLoader.trigger('load:start', moduleName);
+  lumbarLoader.loadModule = function(moduleName, callback, options) {
+    options = options || {};
+    if (!options.silent) {
+      lumbarLoader.trigger && lumbarLoader.trigger('load:start', moduleName);
+    }
     baseLoadModule(moduleName, function() {
-      lumbarLoader.trigger && lumbarLoader.trigger('load:end', moduleName);
+      if (!options.silent) {
+        lumbarLoader.trigger && lumbarLoader.trigger('load:end', moduleName);
+      }
       callback();
-    });
+    }, options);
   };
 })();
