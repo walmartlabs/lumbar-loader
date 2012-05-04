@@ -10,8 +10,8 @@ sinon.assert.pass = function (assertion) {
 sinon.config = {
   injectIntoThis: true,
   injectInto: null,
-  properties: ['spy', 'stub', 'mock', 'sandbox'],
-  useFakeTimers: false,
+  properties: ['spy', 'stub', 'mock', 'sandbox', 'clock'],
+  useFakeTimers: [ 10 ],
   useFakeServer: false
 };
 
