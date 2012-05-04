@@ -1,10 +1,17 @@
 lumbarLoader.loadJS = function(moduleName, callback) {
   var loaded = loadResources(moduleName, 'js', function(href) {
-    loadViaXHR(href, function(data) {
-      if (data) {
-        window.eval(data);
+    loadViaXHR(href, function(err, data) {
+      if (!err && data) {
+        try {
+          window.eval(data);
+          callback();
+          return true;
+        } catch (err) {
+          /* NOP */
+        }
       }
-      callback();
+
+      callback(err ? 'connection' : 'javascript');
     });
     return 1;
   });
@@ -12,9 +19,10 @@ lumbarLoader.loadJS = function(moduleName, callback) {
 };
 lumbarLoader.loadCSS = function(moduleName, callback) {
   var loaded = loadResources(moduleName, 'css', function(href) {
-    loadViaXHR(href, function(data) {
+    loadViaXHR(href, function(err, data) {
       data && exports.loader.loadInlineCSS(data);
-      callback();
+      callback(err ? 'connecion' : undefined);
+      return !err;
     });
     return 1;
   });
@@ -36,12 +44,11 @@ function loadViaXHR(href, callback) {
 
   xhr.onreadystatechange = function(){
     if (xhr.readyState == 4) {
-      var success = (xhr.status >= 200 && xhr.status < 300) || xhr.status == 0;
-      if (success) {
+      var success = (xhr.status >= 200 && xhr.status < 300) || (xhr.status == 0 && xhr.responseText);
+
+      if (callback(!success, xhr.responseText)) {
         LocalCache.store(href, xhr.responseText, LocalCache.TTL.WEEK);
       }
-
-      callback(success && xhr.responseText);
     }
   };
 
