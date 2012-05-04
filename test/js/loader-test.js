@@ -7,26 +7,28 @@ function getSelector(sheetNum, ruleNum) {
   return rule.selectorText;
 }
 
-// Use setTimeout rather than $.ready to test the loader in the no jquery/zepto case
-setTimeout(function(){
-  window.module("Base Loader");
-  asyncTest('load base', function() {
-    expect(6);
+window.module("Base Loader");
+asyncTest('load base', function() {
+  expect(6);
 
-    equal(undefined, window.LoaderTest, 'Core application module is not loaded');
-    Loader.loader.loadModule('base', function(err) {
-      notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
-      equal(document.styleSheets.length, 2, 'Core application stylesheet is loaded');
-      equal(getSelector(1, 0), '.base', 'stylesheet is expected');
-      equal(err, undefined);
+  equal(undefined, window.LoaderTest, 'Core application module is not loaded');
+  Loader.loader.loadModule('base', function(err) {
+    notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
+    equal(document.styleSheets.length, 2, 'Core application stylesheet is loaded');
+    equal(getSelector(1, 0), '.base', 'stylesheet is expected');
+    equal(err, undefined);
 
-      LoaderTest.init(module.exports);
+    LoaderTest.init(module.exports);
 
-      start();
-    });
-    equal(undefined, window.LoaderTest, 'Core application module is not loaded');
+    start();
   });
+  equal(undefined, window.LoaderTest, 'Core application module is not loaded');
+});
 
+lumbarLoader.loadComplete = function(name) {
+  if (name !== 'base') {
+    return;
+  }
   window.module("Route Loader");
   asyncTest('load module1', function() {
     expect(8);
@@ -97,4 +99,4 @@ setTimeout(function(){
   });
 
   document.getElementById('lumbar-modules-loaded').innerHTML = 'modules loaded';
-}, 500);
+};
