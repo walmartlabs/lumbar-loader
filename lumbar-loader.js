@@ -5,11 +5,11 @@ var lumbarLoader = exports.loader = {
     var loadCount = 0,
         expected = 1,
         allInit = false;
-    function complete() {
+    function complete(error) {
       loadCount++;
-      if (allInit && loadCount >= expected) {
-        callback();
-        lumbarLoader.loadComplete && lumbarLoader.loadComplete(moduleName);
+      if (error || (allInit && loadCount >= expected)) {
+        callback(error);
+        lumbarLoader.loadComplete && lumbarLoader.loadComplete(moduleName, error);
       }
     }
 
