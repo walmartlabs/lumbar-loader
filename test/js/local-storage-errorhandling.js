@@ -16,6 +16,7 @@ setTimeout(function(){
       window.foo = undefined;
       lumbarLoadedModules = {};
       lumbarLoadedResources = {};
+      Loader.loader.loaded = {};
     }
   });
 
