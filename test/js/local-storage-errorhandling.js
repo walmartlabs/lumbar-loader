@@ -14,6 +14,7 @@ setTimeout(function(){
     teardown: function() {
       this.xhr.restore();
       window.foo = undefined;
+      lumbarLoadedModules = {};
       lumbarLoadedResources = {};
     }
   });
@@ -107,5 +108,39 @@ setTimeout(function(){
     equal(this.requests.length, 1);
     this.requests[0].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
     equal(LocalCache.store.callCount, 1);
+  });
+
+  test('concurrent requests do no cause duplicates', function() {
+    expect(6);
+
+    var self = this;
+    Loader.loader.loadModule('moduleNoRoute', function(err) {
+      equal(err, undefined);
+      equal(window.foo, 1);
+    });
+    Loader.loader.loadModule('moduleNoRoute', function(err) {
+      equal(err, undefined);
+      equal(window.foo, 1);
+    });
+
+    equal(this.requests.length, 1);
+    this.requests[0].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
+    equal(LocalCache.store.callCount, 1);
+  });
+
+  test('errors in concurrent requests are dispatched', function() {
+    expect(4);
+
+    var self = this;
+    Loader.loader.loadModule('moduleNoRoute', function(err) {
+      equal(err, 'javascript');
+    });
+    Loader.loader.loadModule('moduleNoRoute', function(err) {
+      equal(err, 'javascript');
+    });
+
+    equal(this.requests.length, 1);
+    this.requests[0].respond(200, {}, '<foo');
+    equal(LocalCache.store.callCount, 0);
   });
 }, 100);

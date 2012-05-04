@@ -2,13 +2,30 @@ var lumbarLoader = exports.loader = {
   loadPrefix: typeof lumbarLoadPrefix === 'undefined' ? '' : lumbarLoadPrefix,
 
   loadModule: function(moduleName, callback) {
+    var loaded = lumbarLoadedModules[moduleName];
+    if (loaded) {
+      // We have already been loaded or there is something pending. Handle it
+      if (loaded === true) {
+        callback();
+      } else {
+        loaded.push(callback);
+      }
+      return;
+    }
+
+    loaded = lumbarLoadedModules[moduleName] = [callback];
+
     var loadCount = 0,
         expected = 1,
         allInit = false;
     function complete(error) {
       loadCount++;
       if (error || (allInit && loadCount >= expected)) {
-        callback(error);
+        lumbarLoadedModules[moduleName] = !error;
+
+        for (var i = 0, len = loaded.length; i < len; i++) {
+          loaded[i](error);
+        }
         lumbarLoader.loadComplete && lumbarLoader.loadComplete(moduleName, error);
       }
     }
@@ -29,7 +46,8 @@ var lumbarLoader = exports.loader = {
   }
 };
 
-var lumbarLoadedResources = {},
+var lumbarLoadedModules = {},
+    lumbarLoadedResources = {},
     fieldAttr = {
       js: 'src',
       css: 'href'
