@@ -29,7 +29,17 @@ lumbarLoader.loadComplete = function(name) {
   if (name !== 'base') {
     return;
   }
-  window.module("Route Loader");
+  window.module("Route Loader", {
+    teardown: function() {
+      lumbarLoadedModules = {};
+      lumbarLoadedResources = {};
+      Loader.loader.loaded = {};
+
+      Backbone.history.unbind('route');
+      Loader.loader.unbind();
+      LoaderTest.unbind('load');
+    }
+  });
   asyncTest('load module1', function() {
     expect(8);
     stop(2);    // Add additional stops for the two expected load events
@@ -37,7 +47,6 @@ lumbarLoader.loadComplete = function(name) {
     notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
     equal(window.LoaderTest.module1, undefined, 'module is not loaded');
 
-    Loader.loader.unbind();
     Loader.loader.bind('load:start', function(moduleName) {
       equal(moduleName, 'module1', 'Load start occurred');
       start();
@@ -47,7 +56,6 @@ lumbarLoader.loadComplete = function(name) {
       start();
     });
 
-    LoaderTest.unbind('load');
     LoaderTest.bind('load', function(fragment) {
       equal('module1', fragment, 'Fragment is correct module');
 
@@ -68,7 +76,6 @@ lumbarLoader.loadComplete = function(name) {
     equal(window.LoaderTest.moduleNoRoute, undefined, 'module is not loaded');
     equal(window.failedModules.length, 0);
 
-    Loader.loader.unbind();
     Loader.loader.bind('load:start', function(moduleName) {
       equal(moduleName, 'moduleNoRoute', 'Load start occurred');
       start();
@@ -79,7 +86,6 @@ lumbarLoader.loadComplete = function(name) {
     });
 
     var runCount = 0;
-    Backbone.history.unbind('route');
     Backbone.history.bind('route', function(fragment) {
       runCount || setTimeout(function() {
         equal(runCount, 2, 'route event occurs only twice');
