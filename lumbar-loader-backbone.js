@@ -9,7 +9,7 @@ module.exports.initBackboneLoader = function(loaderModule, failure) {
   for (var moduleName in lumbarLoader.map.modules) {
     handlers['loader_' + moduleName] = (function(moduleName) {
       return function() {
-        if (lumbarLoader.isLoaded(moduleName)) {
+        if (lumbarLoader.isLoading(moduleName)) {
           return;
         }
 

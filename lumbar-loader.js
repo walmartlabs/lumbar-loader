@@ -4,6 +4,9 @@ var lumbarLoader = exports.loader = {
   isLoaded: function(moduleName) {
     return lumbarLoadedModules[moduleName] === true;
   },
+  isLoading: function(moduleName) {
+    return !!lumbarLoadedModules[moduleName];
+  },
 
   loadModule: function(moduleName, callback) {
     var loaded = lumbarLoadedModules[moduleName];
