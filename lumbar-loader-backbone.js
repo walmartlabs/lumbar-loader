@@ -13,7 +13,12 @@ module.exports.initBackboneLoader = function(loaderModule, failure) {
           return;
         }
 
-        lumbarLoader.loadModule(moduleName, function() {
+        lumbarLoader.loadModule(moduleName, function(err) {
+          if (err) {
+            failure(err, moduleName);
+            return;
+          }
+
           // Reload with the new route
           Backbone.history.loadUrl();
         });
