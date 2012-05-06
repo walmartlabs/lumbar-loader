@@ -26,7 +26,7 @@
         {"src": "../lumbar-loader-events.js"},
         {"module-map": true},
         "js/loader-test.js",
-        "js/standard-errorhandling.js",
+        "js/standard.js",
         "js/local-cache.js"
       ]
     },
@@ -39,7 +39,7 @@
         {"src": "../lumbar-loader-events.js"},
         {"module-map": true},
         "js/loader-test.js",
-        "js/local-storage-errorhandling.js",
+        "js/local-storage.js",
         "js/local-cache.js"
       ]
     },
