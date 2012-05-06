@@ -72,6 +72,15 @@
         "styles/module1.css"
       ]
     },
+    "module2": {
+      "routes": {
+        "module2": "module1",
+        "module22": "module1"
+      },
+      "scripts": [
+        "js/module1.js"
+      ]
+    },
     "module-subsequent": {
       "topLevelName": "ModuleDelay",
       "scripts": [

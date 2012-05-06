@@ -16,6 +16,7 @@ setTimeout(function(){
       window.foo = undefined;
       lumbarLoadedModules = {};
       lumbarLoadedResources = {};
+      Backbone.history.navigate('', true);
     }
   });
 
@@ -142,5 +143,40 @@ setTimeout(function(){
     equal(this.requests.length, 1);
     this.requests[0].respond(200, {}, '<foo');
     equal(LocalCache.store.callCount, 0);
+  });
+
+  test('backbone routes are reattempted after connection failure', function() {
+    expect(7);
+
+    this.spy(Backbone.history, 'loadUrl');
+
+    Backbone.history.navigate('module2', true);
+    equal(this.requests.length, 1);
+    this.requests[0].respond(0, {}, '');
+
+    Backbone.history.navigate('');
+    Backbone.history.navigate('module2', true);
+    equal(this.requests.length, 2);
+    this.requests[1].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
+
+    equal(Backbone.history.loadUrl.callCount, 3);
+
+    equal(window.failedModules.length, 1);
+    equal(window.failedModules[0].type, 'connection');
+    equal(window.failedModules[0].module, 'module2');
+    equal(window.foo, 1);
+  });
+  test('multiple execution for backbone routes does not error', function() {
+    expect(3);
+
+    this.spy(Backbone.history, 'loadUrl');
+
+    Backbone.history.navigate('module2', true);
+    Backbone.history.navigate('module22', true);
+    equal(this.requests.length, 1);
+    this.requests[0].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
+
+    equal(Backbone.history.loadUrl.callCount, 3);
+    equal(window.foo, 1);
   });
 }, 100);
