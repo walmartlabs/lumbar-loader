@@ -33,7 +33,6 @@ lumbarLoader.loadComplete = function(name) {
     teardown: function() {
       lumbarLoadedModules = {};
       lumbarLoadedResources = {};
-      Loader.loader.loaded = {};
 
       Backbone.history.unbind('route');
       Loader.loader.unbind();
@@ -69,12 +68,11 @@ lumbarLoader.loadComplete = function(name) {
     Backbone.history.navigate('module1', true);
   });
   asyncTest('load moduleNoRoute', function() {
-    expect(10);
+    expect(7);
     stop(2);    // Add additional stops for the two expected load events
 
     notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
     equal(window.LoaderTest.moduleNoRoute, undefined, 'module is not loaded');
-    equal(window.failedModules.length, 0);
 
     Loader.loader.bind('load:start', function(moduleName) {
       equal(moduleName, 'moduleNoRoute', 'Load start occurred');
@@ -92,8 +90,6 @@ lumbarLoader.loadComplete = function(name) {
 
         equal('moduleNoRoute', fragment, 'Fragment is correct module');
         notEqual(window.LoaderTest.moduleNoRoute, undefined, 'module is loaded');
-        equal(window.failedModules.length, 1);
-        equal(window.failedModules[0], 'module was not loaded properly (no route replacement): moduleNoRoute');
 
         Backbone.history.unbind('route');
         Backbone.history.navigate('');

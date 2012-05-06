@@ -1,14 +1,6 @@
 module.exports.initBackboneLoader = function(loaderModule, failure) {
   var lumbarLoader = (loaderModule || module.exports).loader;
 
-  lumbarLoader.loaded = {};
-  var baseLoadModule = lumbarLoader.loadModule;
-  lumbarLoader.loadModule = function(moduleName, callback) {
-    // Prevent infinite loop if a module is declared incorrectly
-    lumbarLoader.loaded[moduleName] = true;
-    baseLoadModule(moduleName, callback);
-  };
-
   // Setup backbone route loading
   var handlers = {
     routes: {}
@@ -17,11 +9,7 @@ module.exports.initBackboneLoader = function(loaderModule, failure) {
   for (var moduleName in lumbarLoader.map.modules) {
     handlers['loader_' + moduleName] = (function(moduleName) {
       return function() {
-        // if we've already tried to load this module, we've got a problem
-        if (lumbarLoader.loaded[moduleName]) {
-          if (failure) {
-            failure('module was not loaded properly (no route replacement): ' + moduleName);
-          }
+        if (lumbarLoader.isLoaded(moduleName)) {
           return;
         }
 

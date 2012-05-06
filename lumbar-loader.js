@@ -1,6 +1,10 @@
 var lumbarLoader = exports.loader = {
   loadPrefix: typeof lumbarLoadPrefix === 'undefined' ? '' : lumbarLoadPrefix,
 
+  isLoaded: function(moduleName) {
+    return lumbarLoadedModules[moduleName] === true;
+  },
+
   loadModule: function(moduleName, callback) {
     var loaded = lumbarLoadedModules[moduleName];
     if (loaded) {
