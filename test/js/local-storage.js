@@ -14,6 +14,7 @@ setTimeout(function(){
     teardown: function() {
       this.xhr.restore();
       window.foo = undefined;
+      window.failedModules = [];
       lumbarLoadedModules = {};
       lumbarLoadedResources = {};
       Backbone.history.navigate('', true);
@@ -146,7 +147,7 @@ setTimeout(function(){
   });
 
   test('backbone routes are reattempted after connection failure', function() {
-    expect(7);
+    expect(5);
 
     this.spy(Backbone.history, 'loadUrl');
 
@@ -161,13 +162,14 @@ setTimeout(function(){
 
     equal(Backbone.history.loadUrl.callCount, 3);
 
-    equal(window.failedModules.length, 1);
-    equal(window.failedModules[0].type, 'connection');
-    equal(window.failedModules[0].module, 'module2');
+    deepEqual(window.failedModules, [
+      {type: 'connection', module: 'module2'},
+      {type: 'missing-route', module: 'module2'}
+    ]);
     equal(window.foo, 1);
   });
   test('multiple execution for backbone routes does not error', function() {
-    expect(3);
+    expect(4);
 
     this.spy(Backbone.history, 'loadUrl');
 
@@ -176,6 +178,9 @@ setTimeout(function(){
     equal(this.requests.length, 1);
     this.requests[0].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
 
+    deepEqual(window.failedModules, [
+      {type: 'missing-route', module: 'module2'}
+    ]);
     equal(Backbone.history.loadUrl.callCount, 3);
     equal(window.foo, 1);
   });

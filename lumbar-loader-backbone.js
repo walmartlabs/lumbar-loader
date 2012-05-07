@@ -9,7 +9,9 @@ module.exports.initBackboneLoader = function(loaderModule, failure) {
   for (var moduleName in lumbarLoader.map.modules) {
     handlers['loader_' + moduleName] = (function(moduleName) {
       return function() {
-        if (lumbarLoader.isLoading(moduleName)) {
+        if (lumbarLoader.isLoaded(moduleName)) {
+          // The module didn't implement the proper route
+          failure && failure('missing-route', moduleName);
           return;
         }
 

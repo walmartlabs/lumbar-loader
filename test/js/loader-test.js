@@ -33,6 +33,7 @@ lumbarLoader.loadComplete = function(name) {
     teardown: function() {
       lumbarLoadedModules = {};
       lumbarLoadedResources = {};
+      window.failedModules = [];
 
       Backbone.history.unbind('route');
       Loader.loader.unbind();
@@ -40,7 +41,7 @@ lumbarLoader.loadComplete = function(name) {
     }
   });
   asyncTest('load module1', function() {
-    expect(8);
+    expect(9);
     stop(2);    // Add additional stops for the two expected load events
 
     notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
@@ -61,6 +62,7 @@ lumbarLoader.loadComplete = function(name) {
       notEqual(window.LoaderTest.module1, undefined, 'module is loaded');
       equal(document.styleSheets.length, 3, 'stylesheet is loaded');
       equal(getSelector(2, 0), '.module1', 'stylesheet is expected');
+      deepEqual(window.failedModules, []);
 
       Backbone.history.navigate('');
       start();
@@ -68,7 +70,7 @@ lumbarLoader.loadComplete = function(name) {
     Backbone.history.navigate('module1', true);
   });
   asyncTest('load moduleNoRoute', function() {
-    expect(7);
+    expect(8);
     stop(2);    // Add additional stops for the two expected load events
 
     notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
@@ -90,6 +92,10 @@ lumbarLoader.loadComplete = function(name) {
 
         equal('moduleNoRoute', fragment, 'Fragment is correct module');
         notEqual(window.LoaderTest.moduleNoRoute, undefined, 'module is loaded');
+
+        deepEqual(window.failedModules, [
+          {type: 'missing-route', module: 'moduleNoRoute'}
+        ]);
 
         Backbone.history.unbind('route');
         Backbone.history.navigate('');
