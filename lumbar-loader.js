@@ -1,15 +1,39 @@
 var lumbarLoader = exports.loader = {
   loadPrefix: typeof lumbarLoadPrefix === 'undefined' ? '' : lumbarLoadPrefix,
 
+  isLoaded: function(moduleName) {
+    return lumbarLoadedModules[moduleName] === true;
+  },
+  isLoading: function(moduleName) {
+    return !!lumbarLoadedModules[moduleName];
+  },
+
   loadModule: function(moduleName, callback) {
+    var loaded = lumbarLoadedModules[moduleName];
+    if (loaded) {
+      // We have already been loaded or there is something pending. Handle it
+      if (loaded === true) {
+        callback();
+      } else {
+        loaded.push(callback);
+      }
+      return;
+    }
+
+    loaded = lumbarLoadedModules[moduleName] = [callback];
+
     var loadCount = 0,
         expected = 1,
         allInit = false;
-    function complete() {
+    function complete(error) {
       loadCount++;
-      if (allInit && loadCount >= expected) {
-        callback();
-        lumbarLoader.loadComplete && lumbarLoader.loadComplete(moduleName);
+      if (error || (allInit && loadCount >= expected)) {
+        lumbarLoadedModules[moduleName] = !error;
+
+        for (var i = 0, len = loaded.length; i < len; i++) {
+          loaded[i](error);
+        }
+        lumbarLoader.loadComplete && lumbarLoader.loadComplete(moduleName, error);
       }
     }
 
@@ -29,12 +53,13 @@ var lumbarLoader = exports.loader = {
   }
 };
 
-var lumbarLoadedResources = {},
+var lumbarLoadedModules = {},
+    lumbarLoadedResources = {},
     fieldAttr = {
       js: 'src',
       css: 'href'
     };
-function loadResources(moduleName, field, create) {
+function loadResources(moduleName, field, callback, create) {
   var module = moduleName === 'base' ? lumbarLoader.map.base : lumbarLoader.modules[moduleName], // Special case for the base case
       loaded = [],
       attr = fieldAttr[field];
@@ -47,7 +72,12 @@ function loadResources(moduleName, field, create) {
     var object = field[i];
     var href = checkLoadResource(object, attr);
     if (href && !lumbarLoadedResources[href]) {
-      var el = create(href);
+      var el = create(href, function(err) {
+        if (err === 'connection') {
+          lumbarLoadedResources[href] = false;
+        }
+        callback(err);
+      });
       lumbarLoadedResources[href] = true;
       if (el && el.nodeType === 1) {
         document.body.appendChild(el);

@@ -1,12 +1,12 @@
 lumbarLoader.loadJS = function(moduleName, callback) {
-  var loaded = loadResources(moduleName, 'js', function(href) {
+  var loaded = loadResources(moduleName, 'js', callback, function(href, callback) {
     $script(href, callback);
     return 1;
   });
   return loaded.length;
 };
 lumbarLoader.loadCSS = function(moduleName, callback) {
-  var loaded = loadResources(moduleName, 'css', function(href) {
+  var loaded = loadResources(moduleName, 'css', callback, function(href) {
     var link = document.createElement('link');
     link.rel = 'stylesheet';
     link.type = 'text/css';
