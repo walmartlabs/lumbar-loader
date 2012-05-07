@@ -10,9 +10,9 @@
   var baseLoadModule = lumbarLoader.loadModule;
   lumbarLoader.loadModule = function(moduleName, callback) {
     lumbarLoader.trigger && lumbarLoader.trigger('load:start', moduleName);
-    baseLoadModule(moduleName, function() {
+    baseLoadModule(moduleName, function(error) {
       lumbarLoader.trigger && lumbarLoader.trigger('load:end', moduleName);
-      callback();
+      callback(error);
     });
   };
 })();
