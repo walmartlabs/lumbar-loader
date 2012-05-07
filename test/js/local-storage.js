@@ -184,4 +184,24 @@ setTimeout(function(){
     equal(Backbone.history.loadUrl.callCount, 3);
     equal(window.foo, 1);
   });
+
+  test('backbone routes are updated if other load is executing', function() {
+    expect(6);
+
+    this.spy(Backbone.history, 'loadUrl');
+
+    Loader.loader.loadModule('module2', function(err) {
+      equal(err, undefined);
+      equal(window.foo, 1);
+    });
+    Backbone.history.navigate('module2', true);
+    equal(this.requests.length, 1);
+    this.requests[0].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
+
+    deepEqual(window.failedModules, [
+      {type: 'missing-route', module: 'module2'}
+    ]);
+    equal(Backbone.history.loadUrl.callCount, 2);
+    equal(window.foo, 1);
+  });
 }, 100);
