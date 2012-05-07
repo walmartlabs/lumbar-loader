@@ -15,7 +15,7 @@ module.exports.initBackboneLoader = function(loaderModule, failure) {
 
         lumbarLoader.loadModule(moduleName, function(err) {
           if (err) {
-            failure(err, moduleName);
+            failure && failure(err, moduleName);
             return;
           }
 
