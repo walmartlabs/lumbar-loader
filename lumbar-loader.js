@@ -1,4 +1,3 @@
-var loadedModules = [];
 var lumbarLoader = exports.loader = {
   loadPrefix: typeof lumbarLoadPrefix === 'undefined' ? '' : lumbarLoadPrefix,
 
@@ -28,13 +27,15 @@ var lumbarLoader = exports.loader = {
         allInit = false;
     function complete(error) {
       loadCount++;
-      if (allInit && loadCount >= expected) {
+      if (error || (allInit && loadCount >= expected)) {
+        lumbarLoadedModules[moduleName] = !error;
+        for (var i = 0, len = loaded.length; i < len; i++) {
+          loaded[i](error);
+        }
         var moduleInfo = lumbarLoader.modules[moduleName];
         if (moduleInfo && moduleInfo.preload) {
           preloadModules(moduleInfo.preload);
         }
-        callback();
-        lumbarLoader.loadComplete && lumbarLoader.loadComplete(moduleName);
       }
     }
 
