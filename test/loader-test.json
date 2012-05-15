@@ -81,6 +81,17 @@
         "js/module1.js"
       ]
     },
+    "module3": {
+      "preload": ["module4"],
+      "scripts": [
+        "js/module1.js"
+      ]
+    },
+    "module4": {
+      "scripts": [
+        "js/module1.js"
+      ]
+    },
     "module-subsequent": {
       "topLevelName": "ModuleDelay",
       "scripts": [
