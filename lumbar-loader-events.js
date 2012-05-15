@@ -13,11 +13,11 @@
     if (!options.silent) {
       lumbarLoader.trigger && lumbarLoader.trigger('load:start', moduleName);
     }
-    baseLoadModule(moduleName, function() {
+    baseLoadModule(moduleName, function(error) {
       if (!options.silent) {
         lumbarLoader.trigger && lumbarLoader.trigger('load:end', moduleName);
       }
-      callback();
+      callback(error);
     }, options);
   };
 })();
