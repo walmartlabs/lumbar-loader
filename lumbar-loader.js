@@ -36,6 +36,7 @@ var lumbarLoader = exports.loader = {
         for (var i = 0, len = loaded.length; i < len; i++) {
           loaded[i](error);
         }
+        lumbarLoader.loadComplete && lumbarLoader.loadComplete(moduleName, error);
       }
     }
 
