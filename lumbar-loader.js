@@ -8,7 +8,9 @@ var lumbarLoader = exports.loader = {
     return !!lumbarLoadedModules[moduleName];
   },
 
-  loadModule: function(moduleName, callback) {
+  loadModule: function(moduleName, callback, options) {
+    options = options || {};
+
     var loaded = lumbarLoadedModules[moduleName];
     if (loaded) {
       // We have already been loaded or there is something pending. Handle it
@@ -29,8 +31,8 @@ var lumbarLoader = exports.loader = {
       loadCount++;
       if (error || (allInit && loadCount >= expected)) {
         lumbarLoadedModules[moduleName] = !error;
-        var moduleInfo = lumbarLoader.modules[moduleName];
-        if (moduleInfo && moduleInfo.preload) {
+        var moduleInfo = lumbarLoader.modules && lumbarLoader.modules[moduleName];
+        if (moduleInfo && moduleInfo.preload && !options.silent) {
           preloadModules(moduleInfo.preload);
         }
         for (var i = 0, len = loaded.length; i < len; i++) {

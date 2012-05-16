@@ -207,12 +207,13 @@ setTimeout(function(){
 
 
   test('modules are preloaded', function() {
-    expect(3);
+    expect(4);
     var callCount = 0;
     Loader.loader.loadModule('module3', _.bind(function() {
       ++callCount;
       ok(lumbarLoadedModules.module3);
       ok(lumbarLoadedModules.module4);
+      ok(!lumbarLoadedModules.module5);
     }, this));
     this.requests[0].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
     this.requests[1].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');

@@ -88,6 +88,12 @@
       ]
     },
     "module4": {
+      "preload": ["module5"],
+      "scripts": [
+        "js/module1.js"
+      ]
+    },
+    "module5": {
       "scripts": [
         "js/module1.js"
       ]
