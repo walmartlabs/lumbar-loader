@@ -41,18 +41,19 @@ lumbarLoader.loadComplete = function(name) {
     }
   });
   asyncTest('load module1', function() {
-    expect(9);
+    expect(10);
     stop(2);    // Add additional stops for the two expected load events
 
     notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
     equal(window.LoaderTest.module1, undefined, 'module is not loaded');
 
-    Loader.loader.bind('load:start', function(moduleName) {
+    Loader.loader.bind('load:start', function(moduleName, background, object) {
       equal(moduleName, 'module1', 'Load start occurred');
+      equal(object, Loader.loader);
       start();
     });
-    Loader.loader.bind('load:end', function(moduleName) {
-      equal(moduleName, 'module1', 'Load end occurred');
+    Loader.loader.bind('load:end', function(object) {
+      equal(object, Loader.loader, 'Load end occurred');
       start();
     });
 
@@ -70,18 +71,19 @@ lumbarLoader.loadComplete = function(name) {
     Backbone.history.navigate('module1', true);
   });
   asyncTest('load moduleNoRoute', function() {
-    expect(8);
+    expect(9);
     stop(2);    // Add additional stops for the two expected load events
 
     notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
     equal(window.LoaderTest.moduleNoRoute, undefined, 'module is not loaded');
 
-    Loader.loader.bind('load:start', function(moduleName) {
+    Loader.loader.bind('load:start', function(moduleName, background, object) {
       equal(moduleName, 'moduleNoRoute', 'Load start occurred');
+      equal(object, Loader.loader);
       start();
     });
-    Loader.loader.bind('load:end', function(moduleName) {
-      equal(moduleName, 'moduleNoRoute', 'Load end occurred');
+    Loader.loader.bind('load:end', function(object) {
+      equal(object, Loader.loader, 'Load end occurred');
       start();
     });
 
