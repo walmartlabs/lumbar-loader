@@ -204,4 +204,19 @@ setTimeout(function(){
     equal(Backbone.history.loadUrl.callCount, 2);
     equal(window.foo, 1);
   });
+
+
+  test('modules are preloaded', function() {
+    expect(3);
+    var callCount = 0;
+    Loader.loader.loadModule('module3', _.bind(function() {
+      ++callCount;
+      ok(lumbarLoadedModules.module3);
+      ok(lumbarLoadedModules.module4);
+    }, this));
+    this.requests[0].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
+    this.requests[1].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
+    equal(callCount, 1);
+  });
+
 }, 100);

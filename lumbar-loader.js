@@ -29,7 +29,10 @@ var lumbarLoader = exports.loader = {
       loadCount++;
       if (error || (allInit && loadCount >= expected)) {
         lumbarLoadedModules[moduleName] = !error;
-
+        var moduleInfo = lumbarLoader.modules[moduleName];
+        if (moduleInfo && moduleInfo.preload) {
+          preloadModules(moduleInfo.preload);
+        }
         for (var i = 0, len = loaded.length; i < len; i++) {
           loaded[i](error);
         }
@@ -86,6 +89,13 @@ function loadResources(moduleName, field, callback, create) {
     }
   }
   return loaded;
+}
+
+function preloadModules(modules) {
+  var moduleList = modules.slice();
+  for (var i = 0, len = modules.length; i < len; i++) {
+    lumbarLoader.loadModule(modules[i], function() {}, {silent: true});
+  }
 }
 
 var devicePixelRatio = parseFloat(sessionStorage.getItem('dpr') || window.devicePixelRatio || 1);
