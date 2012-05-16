@@ -92,14 +92,10 @@ function loadResources(moduleName, field, callback, create) {
 }
 
 function preloadModules(modules) {
-  var moduleList = _.clone(modules);
-  function preloadModule() {
-    if (moduleList.length) {
-      var moduleName = moduleList.shift();
-      lumbarLoader.loadModule(moduleName, preloadModule, {silent: true});
-    }
+  var moduleList = modules.slice();
+  for (var i = 0, len = modules.length; i < len; i++) {
+    lumbarLoader.loadModule(modules[i], function() {}, {silent: true});
   }
-  preloadModule();
 }
 
 var devicePixelRatio = parseFloat(sessionStorage.getItem('dpr') || window.devicePixelRatio || 1);
