@@ -21,6 +21,22 @@ setTimeout(function(){
     }
   });
 
+  test('cached responses are success', function() {
+    expect(4);
+
+    LocalCache.get.restore();
+    this.stub(LocalCache, 'get', function() { return 'window.foo = "bar";' });
+
+    Loader.loader.loadModule('moduleNoRoute', function(err) {
+      equal(err, undefined);
+      equal(window.foo, 'bar');
+    });
+    this.clock.tick(1000);
+
+    equal(this.requests.length, 0);
+    equal(LocalCache.store.callCount, 0);
+  });
+
   test('empty zero responses are connection errors', function() {
     expect(3);
     Loader.loader.loadModule('moduleNoRoute', function(err) {

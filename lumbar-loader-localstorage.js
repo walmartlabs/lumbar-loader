@@ -32,7 +32,7 @@ function loadViaXHR(href, callback) {
   if (cache) {
     // Dump off the stack to prevent any errors with loader module interaction
     setTimeout(function() {
-      callback(cache);
+      callback(undefined, cache);
     }, 0);
 
     return;
