@@ -53,7 +53,7 @@ var lumbarLoader = exports.loader = {
   loadInlineCSS: function(content) {
     var style = document.createElement('style');
     style.textContent = content;
-    document.body.appendChild(style);
+    getHeadElement().appendChild(style);
     return style;
   }
 };
@@ -86,7 +86,7 @@ function loadResources(moduleName, field, callback, create) {
       lumbarLoadedResources[href] = true;
       if (el && el.nodeType === 1) {
         if (el.tagName === 'LINK') {
-          (document.head || document.getElementsByTagName('head')[0]).appendChild(el);
+          getHeadElement().appendChild(el);
         } else {
           document.body.appendChild(el);
         }
@@ -95,6 +95,10 @@ function loadResources(moduleName, field, callback, create) {
     }
   }
   return loaded;
+}
+
+function getHeadElement() {
+  return document.head || document.getElementsByTagName('head')[0];
 }
 
 function preloadModules(modules) {
