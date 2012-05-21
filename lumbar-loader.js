@@ -85,7 +85,11 @@ function loadResources(moduleName, field, callback, create) {
       });
       lumbarLoadedResources[href] = true;
       if (el && el.nodeType === 1) {
-        document.body.appendChild(el);
+        if (el.tagName === 'LINK') {
+          (document.head || document.getElementsByTagName('head')[0]).appendChild(el);
+        } else {
+          document.body.appendChild(el);
+        }
       }
       loaded.push(el);
     }
