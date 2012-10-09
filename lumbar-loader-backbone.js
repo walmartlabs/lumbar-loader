@@ -1,3 +1,4 @@
+/*global Backbone, module */
 module.exports.initBackboneLoader = function(loaderModule, failure) {
   var lumbarLoader = (loaderModule || module.exports).loader;
 
@@ -32,7 +33,7 @@ module.exports.initBackboneLoader = function(loaderModule, failure) {
           Backbone.history.loadUrl();
         });
       };
-    })(moduleName);
+    }(moduleName));
   }
 
   // For each route create a handler that will load the associated module on request
@@ -40,7 +41,7 @@ module.exports.initBackboneLoader = function(loaderModule, failure) {
     handlers.routes[route] = 'loader_' + lumbarLoader.map.routes[route];
   }
 
-  new (Backbone.Router.extend(handlers));
+  return new (Backbone.Router.extend(handlers))();
 };
 
 // Automatically initialize the loader if everything is setup already

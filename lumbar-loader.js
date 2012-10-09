@@ -1,3 +1,5 @@
+/*jshint loopfunc:true */
+/*global exports, lumbarLoadPrefix */
 var lumbarLoader = exports.loader = {
   loadPrefix: typeof lumbarLoadPrefix === 'undefined' ? '' : lumbarLoadPrefix,
 
@@ -98,7 +100,6 @@ function appendResourceElement(element) {
 }
 
 function preloadModules(modules) {
-  var moduleList = modules.slice();
   for (var i = 0, len = modules.length; i < len; i++) {
     lumbarLoader.loadModule(modules[i], function() {}, {silent: true});
   }

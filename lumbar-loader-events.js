@@ -1,3 +1,4 @@
+/*global _, Backbone, lumbarLoader */
 (function() {
   lumbarLoader.initEvents = function() {
     // Needs to be defered until we know that backbone has been loaded
@@ -20,4 +21,4 @@
       callback(error);
     }, options);
   };
-})();
+}());

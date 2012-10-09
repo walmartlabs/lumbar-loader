@@ -1,3 +1,4 @@
+/*global $script, loadResources, lumbarLoader */
 lumbarLoader.loadJS = function(moduleName, callback) {
   var loaded = loadResources(moduleName, 'js', callback, function(href, callback) {
     $script(href, callback);

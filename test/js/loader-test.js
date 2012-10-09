@@ -1,3 +1,4 @@
+/*global Backbone, Loader, LoaderTest, lumbarLoadedModules, lumbarLoadedResources, lumbarLoader, module */
 //window.LocalCache && LocalCache.reset();
 
 function getSelector(sheetNum, ruleNum) {

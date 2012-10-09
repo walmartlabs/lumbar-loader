@@ -1,3 +1,5 @@
+/*jshint evil: true */
+/*global LocalCache, exports, loadResources, lumbarLoader */
 lumbarLoader.loadJS = function(moduleName, callback) {
   return loadResources(moduleName, 'js', callback, function(href, callback) {
     loadViaXHR(href, function(err, data) {
@@ -41,8 +43,8 @@ function loadViaXHR(href, callback) {
   var xhr = new XMLHttpRequest();
 
   xhr.onreadystatechange = function(){
-    if (xhr.readyState == 4) {
-      var success = (xhr.status >= 200 && xhr.status < 300) || (xhr.status == 0 && xhr.responseText);
+    if (xhr.readyState === 4) {
+      var success = (xhr.status >= 200 && xhr.status < 300) || (xhr.status === 0 && xhr.responseText);
 
       if (callback(!success, xhr.responseText)) {
         LocalCache.store(href, xhr.responseText, LocalCache.TTL.WEEK);

@@ -1,3 +1,4 @@
+/*global LocalCache */
 QUnit.module('LocalCache', {
   setup: function() {
     var config = this.config = {};

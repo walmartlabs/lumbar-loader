@@ -1,3 +1,4 @@
+/*global Loader, lumbarLoadedModules, lumbarLoadedResources */
 setTimeout(function(){
   QUnit.module("Local Storage Loader Error Handling", {
     teardown: function() {

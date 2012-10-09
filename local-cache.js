@@ -22,7 +22,7 @@ this.LocalCache = (function constructor(localStorage) {
     hours: function(numHours) {
       return function() {
         return Date.now() + (MS_IN_HOUR * numHours);
-      }
+      };
     }
   };
 
@@ -46,7 +46,7 @@ this.LocalCache = (function constructor(localStorage) {
         key = key.substring(PREFIX.length + EXPIRES_KEY.length);
         ret.push({
           key: key,
-          access: parseInt(localStorage.getItem(PREFIX+ACCESS_KEY+key) || 0)
+          access: parseInt(localStorage.getItem(PREFIX+ACCESS_KEY+key) || 0, 10)
         });
       }
     }
@@ -146,4 +146,4 @@ this.LocalCache = (function constructor(localStorage) {
     },
     flushExpired: flushExpired
   };
-})(localStorage);
+}(localStorage));
