@@ -8,29 +8,36 @@ function getSelector(sheetNum, ruleNum) {
   return rule.selectorText;
 }
 
-window.module("Base Loader");
-asyncTest('load base', function() {
-  expect(6);
+QUnit.module("Base Loader");
+QUnit.asyncTest('load base', function() {
+  QUnit.expect(6);
 
-  equal(undefined, window.LoaderTest, 'Core application module is not loaded');
+  // We don't support fake clocks in these tests
+  setInterval.clock.restore();
+
+  QUnit.equal(undefined, window.LoaderTest, 'Core application module is not loaded');
   Loader.loader.loadModule('base', function(err) {
-    notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
-    equal(document.styleSheets.length, 2, 'Core application stylesheet is loaded');
-    equal(getSelector(1, 0), '.base', 'stylesheet is expected');
-    equal(err, undefined);
+    QUnit.notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
+    QUnit.equal(document.styleSheets.length, 2, 'Core application stylesheet is loaded');
+    QUnit.equal(getSelector(1, 0), '.base', 'stylesheet is QUnit.expected');
+    QUnit.equal(err, undefined);
 
     LoaderTest.init(module.exports);
 
-    start();
+    QUnit.start();
   });
-  equal(undefined, window.LoaderTest, 'Core application module is not loaded');
+  QUnit.equal(undefined, window.LoaderTest, 'Core application module is not loaded');
 });
 
 lumbarLoader.loadComplete = function(name) {
   if (name !== 'base') {
     return;
   }
-  window.module("Route Loader", {
+  QUnit.module("Route Loader", {
+    setup: function() {
+      // We don't support fake clocks in these tests
+      setInterval.clock.restore();
+    },
     teardown: function() {
       lumbarLoadedModules = {};
       lumbarLoadedResources = {};
@@ -41,68 +48,68 @@ lumbarLoader.loadComplete = function(name) {
       LoaderTest.unbind('load');
     }
   });
-  asyncTest('load module1', function() {
-    expect(10);
-    stop(2);    // Add additional stops for the two expected load events
+  QUnit.asyncTest('load module1', function() {
+    QUnit.expect(10);
+    QUnit.stop(2);    // Add additional stops for the two QUnit.expected load events
 
-    notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
-    equal(window.LoaderTest.module1, undefined, 'module is not loaded');
+    QUnit.notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
+    QUnit.equal(window.LoaderTest.module1, undefined, 'module is not loaded');
 
     Loader.loader.bind('load:start', function(moduleName, background, object) {
-      equal(moduleName, 'module1', 'Load start occurred');
-      equal(object, Loader.loader);
-      start();
+      QUnit.equal(moduleName, 'module1', 'Load start occurred');
+      QUnit.equal(object, Loader.loader);
+      QUnit.start();
     });
     Loader.loader.bind('load:end', function(object) {
-      equal(object, Loader.loader, 'Load end occurred');
-      start();
+      QUnit.equal(object, Loader.loader, 'Load end occurred');
+      QUnit.start();
     });
 
     LoaderTest.bind('load', function(fragment) {
-      equal('module1', fragment, 'Fragment is correct module');
+      QUnit.equal('module1', fragment, 'Fragment is correct module');
 
-      notEqual(window.LoaderTest.module1, undefined, 'module is loaded');
-      equal(document.styleSheets.length, 3, 'stylesheet is loaded');
-      equal(getSelector(2, 0), '.module1', 'stylesheet is expected');
-      deepEqual(window.failedModules, []);
+      QUnit.notEqual(window.LoaderTest.module1, undefined, 'module is loaded');
+      QUnit.equal(document.styleSheets.length, 3, 'stylesheet is loaded');
+      QUnit.equal(getSelector(2, 0), '.module1', 'stylesheet is QUnit.expected');
+      QUnit.deepEqual(window.failedModules, []);
 
       Backbone.history.navigate('');
-      start();
+      QUnit.start();
     });
     Backbone.history.navigate('module1', true);
   });
-  asyncTest('load moduleNoRoute', function() {
-    expect(9);
-    stop(2);    // Add additional stops for the two expected load events
+  QUnit.asyncTest('load moduleNoRoute', function() {
+    QUnit.expect(9);
+    QUnit.stop(2);    // Add additional stops for the two QUnit.expected load events
 
-    notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
-    equal(window.LoaderTest.moduleNoRoute, undefined, 'module is not loaded');
+    QUnit.notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
+    QUnit.equal(window.LoaderTest.moduleNoRoute, undefined, 'module is not loaded');
 
     Loader.loader.bind('load:start', function(moduleName, background, object) {
-      equal(moduleName, 'moduleNoRoute', 'Load start occurred');
-      equal(object, Loader.loader);
-      start();
+      QUnit.equal(moduleName, 'moduleNoRoute', 'Load start occurred');
+      QUnit.equal(object, Loader.loader);
+      QUnit.start();
     });
     Loader.loader.bind('load:end', function(object) {
-      equal(object, Loader.loader, 'Load end occurred');
-      start();
+      QUnit.equal(object, Loader.loader, 'Load end occurred');
+      QUnit.start();
     });
 
     var runCount = 0;
     Backbone.history.bind('route', function(fragment) {
       runCount || setTimeout(function() {
-        equal(runCount, 2, 'route event occurs only twice');
+        QUnit.equal(runCount, 2, 'route event occurs only twice');
 
-        equal('moduleNoRoute', fragment, 'Fragment is correct module');
-        notEqual(window.LoaderTest.moduleNoRoute, undefined, 'module is loaded');
+        QUnit.equal('moduleNoRoute', fragment, 'Fragment is correct module');
+        QUnit.notEqual(window.LoaderTest.moduleNoRoute, undefined, 'module is loaded');
 
-        deepEqual(window.failedModules, [
+        QUnit.deepEqual(window.failedModules, [
           {type: 'missing-route', module: 'moduleNoRoute'}
         ]);
 
         Backbone.history.unbind('route');
         Backbone.history.navigate('');
-        start();
+        QUnit.start();
       }, 500);
       runCount++;
     });

@@ -22,208 +22,208 @@ setTimeout(function(){
   });
 
   test('cached responses are success', function() {
-    expect(4);
+    QUnit.expect(4);
 
     LocalCache.get.restore();
     this.stub(LocalCache, 'get', function() { return 'window.foo = "bar";' });
 
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      equal(err, undefined);
-      equal(window.foo, 'bar');
+      QUnit.equal(err, undefined);
+      QUnit.equal(window.foo, 'bar');
     });
     this.clock.tick(1000);
 
-    equal(this.requests.length, 0);
-    equal(LocalCache.store.callCount, 0);
+    QUnit.equal(this.requests.length, 0);
+    QUnit.equal(LocalCache.store.callCount, 0);
   });
 
   test('empty zero responses are connection errors', function() {
-    expect(3);
+    QUnit.expect(3);
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      equal(err, 'connection');
+      QUnit.equal(err, 'connection');
     });
-    equal(this.requests.length, 1);
+    QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(0, {}, '');
-    equal(LocalCache.store.callCount, 0);
+    QUnit.equal(LocalCache.store.callCount, 0);
   });
   test('zero responses with content are fine', function() {
-    expect(4);
+    QUnit.expect(4);
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      equal(err, undefined);
-      equal(window.foo, 'bar');
+      QUnit.equal(err, undefined);
+      QUnit.equal(window.foo, 'bar');
     });
-    equal(this.requests.length, 1);
+    QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(0, {}, 'window.foo = "bar";');
-    equal(LocalCache.store.callCount, 1);
+    QUnit.equal(LocalCache.store.callCount, 1);
   });
   test('empty responses with status are acceptable css', function() {
-    expect(4);
+    QUnit.expect(4);
     Loader.loader.loadModule('module1', function(err) {
-      equal(err, undefined);
-      equal(window.foo, 'bar');
+      QUnit.equal(err, undefined);
+      QUnit.equal(window.foo, 'bar');
     });
-    equal(this.requests.length, 2);
+    QUnit.equal(this.requests.length, 2);
     this.requests[0].respond(200, {}, '');
     this.requests[1].respond(200, {}, 'window.foo = "bar";');
-    equal(LocalCache.store.callCount, 2);
+    QUnit.equal(LocalCache.store.callCount, 2);
   });
   test('empty responses with status are javascript errors', function() {
-    expect(3);
+    QUnit.expect(3);
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      equal(err, 'javascript');
+      QUnit.equal(err, 'javascript');
     });
-    equal(this.requests.length, 1);
+    QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(200, {}, '');
-    equal(LocalCache.store.callCount, 0);
+    QUnit.equal(LocalCache.store.callCount, 0);
   });
   test('exec errors are javascript errors', function() {
-    expect(3);
+    QUnit.expect(3);
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      equal(err, 'javascript');
+      QUnit.equal(err, 'javascript');
     });
-    equal(this.requests.length, 1);
+    QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(200, {}, '<foo');
-    equal(LocalCache.store.callCount, 0);
+    QUnit.equal(LocalCache.store.callCount, 0);
   });
 
   test('subsequent requests are made after errors', function() {
-    expect(6);
+    QUnit.expect(6);
 
     var self = this;
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      equal(err, 'connection');
+      QUnit.equal(err, 'connection');
 
       Loader.loader.loadModule('moduleNoRoute', function(err) {
-        equal(err, undefined);
-        equal(window.foo, 'bar');
+        QUnit.equal(err, undefined);
+        QUnit.equal(window.foo, 'bar');
       });
 
-      equal(self.requests.length, 2);
+      QUnit.equal(self.requests.length, 2);
       self.requests[1].respond(200, {}, 'window.foo = "bar";');
-      equal(LocalCache.store.callCount, 1);
+      QUnit.equal(LocalCache.store.callCount, 1);
     });
 
-    equal(this.requests.length, 1);
+    QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(0, {}, '');
   });
 
   test('subsequent requests are ignored after success', function() {
-    expect(7);
+    QUnit.expect(7);
 
     var self = this;
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      equal(err, undefined);
-      equal(window.foo, 1);
+      QUnit.equal(err, undefined);
+      QUnit.equal(window.foo, 1);
 
       Loader.loader.loadModule('moduleNoRoute', function(err) {
-        equal(err, undefined);
-        equal(window.foo, 1);
+        QUnit.equal(err, undefined);
+        QUnit.equal(window.foo, 1);
       });
 
-      equal(self.requests.length, 1);
+      QUnit.equal(self.requests.length, 1);
     });
 
-    equal(this.requests.length, 1);
+    QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
-    equal(LocalCache.store.callCount, 1);
+    QUnit.equal(LocalCache.store.callCount, 1);
   });
 
   test('concurrent requests do no cause duplicates', function() {
-    expect(6);
+    QUnit.expect(6);
 
     var self = this;
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      equal(err, undefined);
-      equal(window.foo, 1);
+      QUnit.equal(err, undefined);
+      QUnit.equal(window.foo, 1);
     });
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      equal(err, undefined);
-      equal(window.foo, 1);
+      QUnit.equal(err, undefined);
+      QUnit.equal(window.foo, 1);
     });
 
-    equal(this.requests.length, 1);
+    QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
-    equal(LocalCache.store.callCount, 1);
+    QUnit.equal(LocalCache.store.callCount, 1);
   });
 
   test('errors in concurrent requests are dispatched', function() {
-    expect(4);
+    QUnit.expect(4);
 
     var self = this;
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      equal(err, 'javascript');
+      QUnit.equal(err, 'javascript');
     });
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      equal(err, 'javascript');
+      QUnit.equal(err, 'javascript');
     });
 
-    equal(this.requests.length, 1);
+    QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(200, {}, '<foo');
-    equal(LocalCache.store.callCount, 0);
+    QUnit.equal(LocalCache.store.callCount, 0);
   });
 
   test('backbone routes are reattempted after connection failure', function() {
-    expect(5);
+    QUnit.expect(5);
 
     this.spy(Backbone.history, 'loadUrl');
 
     Backbone.history.navigate('module2', true);
-    equal(this.requests.length, 1);
+    QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(0, {}, '');
 
     Backbone.history.navigate('');
     Backbone.history.navigate('module2', true);
-    equal(this.requests.length, 2);
+    QUnit.equal(this.requests.length, 2);
     this.requests[1].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
 
-    equal(Backbone.history.loadUrl.callCount, 3);
+    QUnit.equal(Backbone.history.loadUrl.callCount, 3);
 
-    deepEqual(window.failedModules, [
+    QUnit.deepEqual(window.failedModules, [
       {type: 'connection', module: 'module2'},
       {type: 'missing-route', module: 'module2'}
     ]);
-    equal(window.foo, 1);
+    QUnit.equal(window.foo, 1);
   });
   test('multiple execution for backbone routes does not error', function() {
-    expect(4);
+    QUnit.expect(4);
 
     this.spy(Backbone.history, 'loadUrl');
 
     Backbone.history.navigate('module2', true);
     Backbone.history.navigate('module22', true);
-    equal(this.requests.length, 1);
+    QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
 
-    deepEqual(window.failedModules, [
+    QUnit.deepEqual(window.failedModules, [
       {type: 'missing-route', module: 'module2'}
     ]);
-    equal(Backbone.history.loadUrl.callCount, 3);
-    equal(window.foo, 1);
+    QUnit.equal(Backbone.history.loadUrl.callCount, 3);
+    QUnit.equal(window.foo, 1);
   });
 
   test('backbone routes are updated if other load is executing', function() {
-    expect(6);
+    QUnit.expect(6);
 
     this.spy(Backbone.history, 'loadUrl');
 
     Loader.loader.loadModule('module2', function(err) {
-      equal(err, undefined);
-      equal(window.foo, 1);
+      QUnit.equal(err, undefined);
+      QUnit.equal(window.foo, 1);
     });
     Backbone.history.navigate('module2', true);
-    equal(this.requests.length, 1);
+    QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
 
-    deepEqual(window.failedModules, [
+    QUnit.deepEqual(window.failedModules, [
       {type: 'missing-route', module: 'module2'}
     ]);
-    equal(Backbone.history.loadUrl.callCount, 2);
-    equal(window.foo, 1);
+    QUnit.equal(Backbone.history.loadUrl.callCount, 2);
+    QUnit.equal(window.foo, 1);
   });
 
 
   test('modules are preloaded', function() {
-    expect(4);
+    QUnit.expect(4);
     var callCount = 0;
     Loader.loader.loadModule('module3', _.bind(function() {
       ++callCount;
@@ -233,7 +233,7 @@ setTimeout(function(){
     }, this));
     this.requests[0].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
     this.requests[1].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
-    equal(callCount, 1);
+    QUnit.equal(callCount, 1);
   });
 
 }, 100);

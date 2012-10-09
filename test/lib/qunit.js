@@ -517,7 +517,8 @@ var config = {
 // Expose the API as global variables, unless an 'exports'
 // object exists, in that case we assume we're in CommonJS
 if ( typeof exports === "undefined" || typeof require === "undefined" ) {
-	extend(window, QUnit);
+	// WARN: Removed to prevent $script.js breakages.
+	//extend(window, QUnit);
 	window.QUnit = QUnit;
 } else {
 	extend(exports, QUnit);
