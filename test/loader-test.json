@@ -18,13 +18,8 @@
     },
     "loader-standard": {
       "topLevelName": "Loader",
+      "mixins": ["lumbar-loader"],
       "scripts": [
-        {"src": "lib/script.js", "global": true},
-        {"src": "../local-cache.js", "global": true},
-        {"src": "../lumbar-loader.js"},
-        {"src": "../lumbar-loader-standard.js"},
-        {"src": "../lumbar-loader-events.js"},
-        {"module-map": true},
         "js/loader-test.js",
         "js/standard.js",
         "js/local-cache.js"
@@ -32,12 +27,8 @@
     },
     "loader-local": {
       "topLevelName": "Loader",
+      "mixins": ["lumbar-localstorage-loader"],
       "scripts": [
-        {"src": "../local-cache.js", "global": true},
-        {"src": "../lumbar-loader.js"},
-        {"src": "../lumbar-loader-localstorage.js"},
-        {"src": "../lumbar-loader-events.js"},
-        {"module-map": true},
         "js/loader-test.js",
         "js/local-storage.js",
         "js/local-cache.js"
@@ -115,5 +106,8 @@
         "moduleNoRoute": "module1"
       }
     }
-  }
+  },
+  "mixins": [
+    "../"
+  ]
 }
