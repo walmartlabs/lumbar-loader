@@ -5,7 +5,7 @@
     // Loads module resources through standard link and script tags.
     "lumbar-loader": {
       "scripts": [
-        {"src": "lib/script.js", "global": true},
+        {"src": "lib/script.js", "global": true, "combined": false},
         {"src": "local-cache.js", "global": true},
         {"src": "lumbar-loader.js"},
         {"src": "lumbar-loader-events.js"},
