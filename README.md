@@ -175,3 +175,4 @@ feature sets on some supported browsers.
 
 Note that prior versions of IE, back to IE6, can be supported by reworking the duplicate prevention
 routines in `checkLoaderResources` to utilizes methods other than `querySelector`.
+
