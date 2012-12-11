@@ -1,4 +1,6 @@
 {
+  "name": "lumbar-loader",
+
   "mixins": {
     // Standard HTML loader
     //
