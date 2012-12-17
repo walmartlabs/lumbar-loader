@@ -2,14 +2,30 @@
   "name": "lumbar-loader",
 
   "mixins": {
+    // Standard HTML loader
+    //
+    // Loads module resources through standard link and script tags.
     "lumbar-loader": {
       "scripts": [
-        {"src": "lib/script.js", "global": true, "combined": false, "env": "dev"},
+        {"src": "lib/script.js", "global": true, "combined": false},
         {"src": "local-cache.js", "global": true},
         {"src": "lumbar-loader.js"},
         {"src": "lumbar-loader-events.js"},
-        {"src": "lumbar-loader-standard.js", "env": "dev"},
-        {"src": "lumbar-loader-localstorage.js", "env": "production"},
+        {"src": "lumbar-loader-standard.js"},
+        {"module-map": true}
+      ]
+    },
+
+    // Loader pulling from local storage.
+    //
+    // This is intended for produciton use only as the cache invalidation
+    // rules in place make developing with this loader quite problematic.
+    "lumbar-localstorage-loader": {
+      "scripts": [
+        {"src": "local-cache.js", "global": true},
+        {"src": "lumbar-loader.js"},
+        {"src": "lumbar-loader-events.js"},
+        {"src": "lumbar-loader-localstorage.js"},
         {"module-map": true}
       ]
     }
