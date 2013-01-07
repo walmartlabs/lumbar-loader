@@ -31,10 +31,8 @@ var lumbarLoader = exports.loader = {
         allInit = false,
         moduleInfo = lumbarLoader.modules && lumbarLoader.modules[moduleName];
 
-    function complete(error, supressLoadCountIncrease) {
-      if (!supressLoadCountIncrease) {
-        loadCount++;
-      }
+    function complete(error) {
+      loadCount++;
       if (error || (allInit && loadCount >= expected)) {
         lumbarLoadedModules[moduleName] = !error;
         if (moduleInfo && moduleInfo.preload && !options.silent) {
@@ -54,7 +52,7 @@ var lumbarLoader = exports.loader = {
         // If everything was done sync then fire away
         allInit = true;
       }
-      complete(error, true);
+      complete(error);
     }
 
     if (moduleInfo && moduleInfo.depends) {
