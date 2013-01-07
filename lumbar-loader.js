@@ -28,12 +28,15 @@ var lumbarLoader = exports.loader = {
 
     var loadCount = 0,
         expected = 1,
-        allInit = false;
-    function complete(error) {
-      loadCount++;
+        allInit = false,
+        moduleInfo = lumbarLoader.modules && lumbarLoader.modules[moduleName];
+
+    function complete(error, supressLoadCountIncrease) {
+      if (!supressLoadCountIncrease) {
+        loadCount++;
+      }
       if (error || (allInit && loadCount >= expected)) {
         lumbarLoadedModules[moduleName] = !error;
-        var moduleInfo = lumbarLoader.modules && lumbarLoader.modules[moduleName];
         if (moduleInfo && moduleInfo.preload && !options.silent) {
           preloadModules(moduleInfo.preload);
         }
@@ -44,12 +47,26 @@ var lumbarLoader = exports.loader = {
       }
     }
 
-    expected += lumbarLoader.loadCSS(moduleName, complete);
-    expected += lumbarLoader.loadJS(moduleName, complete);
+    function loadResources(error) {
+      if (!error) {
+        expected += lumbarLoader.loadCSS(moduleName, complete);
+        expected += lumbarLoader.loadJS(moduleName, complete);
+        // If everything was done sync then fire away
+        allInit = true;
+      }
+      complete(error, true);
+    }
 
-    // If everything was done sync then fire away
-    allInit = true;
-    complete();
+    if (moduleInfo && moduleInfo.depends) {
+      var dep = moduleInfo.depends,
+          queue = self.queue();
+      for (var i=0; i<dep.length; i++) {
+        queue.defer(lumbarLoader.loadModule, dep[i]);
+      }
+      queue.awaitAll(loadResources);
+    } else {
+      loadResources();
+    }
   },
 
   loadInlineCSS: function(content) {
