@@ -1,4 +1,4 @@
-/*dotfiles browser*/
+/*dotfiles browser, lumbar, backbone, qunit*/
 {
   "node": false,
   "es5": false,
@@ -28,5 +28,16 @@
   "loopfunc": true,
   "shadow": true,
   "nonstandard": true,
-  "onevar": false
+  "onevar": false,
+  "predef": [
+    "module",
+    "exports",
+    "QUnit",
+    "test",
+    "asyncTest",
+    "ok",
+    "equal",
+    "deepEqual",
+    "expect"
+  ]
 }
