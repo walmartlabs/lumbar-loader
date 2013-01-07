@@ -116,5 +116,32 @@ lumbarLoader.loadComplete = function(name) {
     Backbone.history.navigate('moduleNoRoute', true);
   });
 
+
+  QUnit.asyncTest('module dependancies', function() {
+    QUnit.equal(window.dependsLoaded, undefined);
+    LoaderTest.bind('load', function(fragment) {
+      QUnit.equal(fragment, 'has-depends');
+      QUnit.equal(window.dependsLoaded, true);
+      Backbone.history.navigate('');
+    });
+
+    Backbone.history.navigate('has-depends', true);
+    QUnit.start();
+/*
+    LoaderTest.bind('load', function(fragment) {
+      QUnit.equal('has-depends', fragment, 'Fragment is correct module');
+
+      QUnit.notEqual(window.LoaderTest.module1, undefined, 'module is loaded');
+      QUnit.equal(document.styleSheets.length, 3, 'stylesheet is loaded');
+      QUnit.equal(getSelector(2, 0), '.module1', 'stylesheet is QUnit.expected');
+      QUnit.deepEqual(window.failedModules, []);
+
+      QUnit.start();
+    });
+    Backbone.history.navigate('has-depends', true);
+*/
+  });
+
+
   document.getElementById('lumbar-modules-loaded').innerHTML = 'modules loaded';
 };
