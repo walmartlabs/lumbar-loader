@@ -116,5 +116,20 @@ lumbarLoader.loadComplete = function(name) {
     Backbone.history.navigate('moduleNoRoute', true);
   });
 
+
+  QUnit.asyncTest('module dependancies', 5, function() {
+    QUnit.equal(window.dependsLoaded, undefined, 'The dependant module code has not yet run');
+    LoaderTest.bind('load', function(fragment) {
+      QUnit.equal(fragment, 'has-depends', 'Verify the has-depends load');
+      QUnit.equal(window.dependsLoaded, true, 'The dependant module code has run');
+      QUnit.equal(true, !!LoaderTest['module-depends'], 'The dependant module exists in LoaderTest');
+      Backbone.history.navigate('');
+      QUnit.start();
+    });
+
+    Backbone.history.navigate('has-depends', true);
+  });
+
+
   document.getElementById('lumbar-modules-loaded').innerHTML = 'modules loaded';
 };

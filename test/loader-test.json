@@ -89,6 +89,20 @@
         "js/module1.js"
       ]
     },
+    "module-depends-on-this": {
+      "scripts": [
+        "js/depends-on-this.js"
+      ]
+    },
+    "module-depends": {
+      "depends": ["module-depends-on-this"],
+      "routes": {
+        "has-depends": "hasDepends"
+      },
+      "scripts": [
+        "js/depends.js"
+      ]
+    },
     "module-subsequent": {
       "topLevelName": "ModuleDelay",
       "scripts": [
