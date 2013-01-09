@@ -8,6 +8,7 @@
     "lumbar-loader": {
       "scripts": [
         {"src": "lib/script.js", "global": true, "combined": false},
+        {"src": "lib/queue.js", "global": true},
         {"src": "local-cache.js", "global": true},
         {"src": "lumbar-loader.js"},
         {"src": "lumbar-loader-events.js"},
@@ -22,6 +23,7 @@
     // rules in place make developing with this loader quite problematic.
     "lumbar-localstorage-loader": {
       "scripts": [
+        {"src": "lib/queue.js", "global": true},
         {"src": "local-cache.js", "global": true},
         {"src": "lumbar-loader.js"},
         {"src": "lumbar-loader-events.js"},
