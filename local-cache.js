@@ -100,7 +100,7 @@ this.LocalCache = (function constructor(localStorage) {
           return true;
         } catch (err) {
           // If quota drop the things that are closest to expiration out of the cache
-          if (err.name === 'QUOTA_EXCEEDED_ERR') {
+          if (err.name === 'QUOTA_EXCEEDED_ERR' || err.name === 'QuotaExceededError') {
             cullList = cullList || loadByAccess();
             if (cullList.length) {
               removeKey(cullList[0].key);
