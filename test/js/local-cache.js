@@ -98,6 +98,28 @@ test('reset - hard', function() {
   QUnit.deepEqual(this.config, {});
 });
 
+test('invalidate', function() {
+  LocalCache.store('foo', 'test', LocalCache.TTL.HOUR);
+  LocalCache.store('test', 'test');
+  LocalCache.store('test2', 'test', LocalCache.TTL.HOUR);
+  LocalCache.invalidate('test');
+  QUnit.equal(this.storage.removeItem.callCount, 3);
+  QUnit.equal(LocalCache.get('foo'), 'test');
+  QUnit.equal(LocalCache.get('test'), 'test');
+  QUnit.equal(LocalCache.get('test2'), undefined);
+});
+
+test('invalidate - hard', function() {
+  LocalCache.store('foo', 'test', LocalCache.TTL.HOUR);
+  LocalCache.store('test', 'test');
+  LocalCache.store('test2', 'test', LocalCache.TTL.HOUR);
+  LocalCache.invalidate('test', true);
+  QUnit.equal(this.storage.removeItem.callCount, 6);
+  QUnit.equal(LocalCache.get('foo'), 'test');
+  QUnit.equal(LocalCache.get('test'), undefined);
+  QUnit.equal(LocalCache.get('test2'), undefined);
+});
+
 test('flush expired', function() {
   LocalCache.store('test', 'test', LocalCache.TTL.hours(0.5));
   LocalCache.store('test2', 'test', LocalCache.TTL.WEEK);
