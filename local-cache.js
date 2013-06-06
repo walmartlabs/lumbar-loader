@@ -131,18 +131,24 @@ this.LocalCache = (function constructor(localStorage) {
     remove: function(key) {
       removeKey(key);
     },
-    reset: function(hard) {
+    invalidate: function(prefix, hard) {
       var toRemove = [];
 
       for (var i = 0, len = localStorage.length; i < len; i++) {
         var key = localStorage.key(i);
         if ((hard ? ALL_REGEX : EXPIRES_REGEX).test(key)) {
-          toRemove.push(key.substring(PREFIX.length + (!hard ? EXPIRES_KEY.length : 0)));
+          var key = key.substring(PREFIX.length + (!hard ? EXPIRES_KEY.length : 0));
+          if (!prefix || key.indexOf(prefix) === 0) {
+            toRemove.push(key);
+          }
         }
       }
 
       // Actually remove everything
       toRemove.forEach(removeKey);
+    },
+    reset: function(hard) {
+      this.invalidate('', hard);
     },
     flushExpired: flushExpired
   };

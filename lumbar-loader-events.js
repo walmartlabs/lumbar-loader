@@ -11,11 +11,13 @@
   var baseLoadModule = lumbarLoader.loadModule;
   lumbarLoader.loadModule = function(moduleName, callback, options) {
     options = options || {};
-    if (!options.silent) {
+
+    var loaded = lumbarLoader.isLoaded(moduleName);
+    if (!options.silent && !loaded) {
       lumbarLoader.trigger && lumbarLoader.trigger('load:start', moduleName, undefined, lumbarLoader);
     }
     baseLoadModule(moduleName, function(error) {
-      if (!options.silent) {
+      if (!options.silent && !loaded) {
         lumbarLoader.trigger && lumbarLoader.trigger('load:end', lumbarLoader);
       }
       callback(error);
