@@ -10,7 +10,7 @@
     "mobile",
     "performance"
   ],
-  "version": "1.1.0",
+  "version": "1.1.1",
   "repository": {
     "url": "git://github.com/walmartlabs/lumbar-loader.git"
   },
