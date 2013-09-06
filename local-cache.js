@@ -1,12 +1,51 @@
-this.LocalCache = (function constructor(localStorage) {
-  var MS_IN_HOUR = 3600000,   // 60*60*1000
-      MS_IN_DAY = 24*MS_IN_HOUR,
-      PREFIX = 'LocalCache_',
-      EXPIRES_KEY = 'Expires_',
-      ACCESS_KEY = 'Access_',
-      EXPIRES_REGEX = /^LocalCache_Expires_.*/,
-      ALL_REGEX = /^LocalCache_.*/;
+var MS_IN_HOUR = 3600000,   // 60*60*1000
+    MS_IN_DAY = 24*MS_IN_HOUR,
+    PREFIX = 'LocalCache_',
+    EXPIRES_KEY = 'Expires_',
+    ACCESS_KEY = 'Access_',
+    EXPIRES_REGEX = /^LocalCache_Expires_.*/,
+    ALL_REGEX = /^LocalCache_.*/,
+    localStorageHelper = (function() {
+      var localStorageData = {};
 
+      try {
+        localStorage.setItem('available-test', '1');
+        localStorage.removeItem('available-test');
+
+        // Return an object for stubability
+        return {
+          getItem: function(name) {
+            return localStorage.getItem(name);;
+          },
+    setItem: function(name, value) {
+      localStorage.setItem(name, value);
+    },
+    removeItem: function(name) {
+      localStorage.removeItem(name);
+    }
+        };
+      } catch (err) {
+        return {
+          shit: function() {
+            console.log(localStorageHelper);
+          },
+            getItem: function(name) {
+              return localStorageData[name];
+            },
+            setItem: function(name, value) {
+              if (name.indexOf(PREFIX+EXPIRES_KEY) === 0 || name.indexOf(PREFIX+ACCESS_KEY) === 0) {
+                return;
+              }
+              localStorageData[name] = value;
+            },
+            removeItem: function(name) {
+              delete localStorageData[name];
+            }
+        };
+      }
+    })();
+
+this.LocalCache = (function constructor(localStorage) {
   var dailyExpiration = 10*MS_IN_HOUR;   // Default to 2am PST
 
   var TTL = {
@@ -152,4 +191,4 @@ this.LocalCache = (function constructor(localStorage) {
     },
     flushExpired: flushExpired
   };
-}(localStorage));
+}(localStorageHelper));

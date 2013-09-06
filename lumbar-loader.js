@@ -120,7 +120,7 @@ function preloadModules(modules) {
   }
 }
 
-var devicePixelRatio = parseFloat(sessionStorage.getItem('dpr') || window.devicePixelRatio || 1);
+var devicePixelRatio = parseFloat(LocalCache.get('dpr') || window.devicePixelRatio || 1);
 exports.devicePixelRatio = devicePixelRatio;
 function checkLoadResource(object, attr) {
   var href = lumbarLoader.loadPrefix + (object.href || object);
