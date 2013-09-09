@@ -1,4 +1,4 @@
-this.LocalCache = (function constructor(localStorage) {
+this.LocalCache = (function constructor() {
   var localStorage = (function() {
     var localStorageData = {};
 
