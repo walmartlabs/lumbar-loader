@@ -1,13 +1,49 @@
-this.LocalCache = (function constructor(localStorage) {
+this.LocalCache = (function constructor() {
+  var patrick = (function() {
+    var localStorageData = {};
+
+    try {
+      localStorage.setItem('available-test', '1');
+      localStorage.removeItem('available-test');
+
+      // Return an object for stubability
+      return {
+        getItem: function(name) {
+          return localStorage.getItem(name);;
+        },
+      setItem: function(name, value) {
+        localStorage.setItem(name, value);
+      },
+      removeItem: function(name) {
+        localStorage.removeItem(name);
+      }
+      };
+    } catch (err) {
+      return {
+          getItem: function(name) {
+            return localStorageData[name];
+          },
+          setItem: function(name, value) {
+            if (name.indexOf(PREFIX+EXPIRES_KEY) === 0 || name.indexOf(PREFIX+ACCESS_KEY) === 0) {
+              return;
+            }
+            localStorageData[name] = value;
+          },
+          removeItem: function(name) {
+            delete localStorageData[name];
+          }
+      };
+    }
+  })();
+
   var MS_IN_HOUR = 3600000,   // 60*60*1000
       MS_IN_DAY = 24*MS_IN_HOUR,
       PREFIX = 'LocalCache_',
       EXPIRES_KEY = 'Expires_',
       ACCESS_KEY = 'Access_',
       EXPIRES_REGEX = /^LocalCache_Expires_.*/,
-      ALL_REGEX = /^LocalCache_.*/;
-
-  var dailyExpiration = 10*MS_IN_HOUR;   // Default to 2am PST
+      ALL_REGEX = /^LocalCache_.*/,
+      dailyExpiration = 10*MS_IN_HOUR;   // Default to 2am PST
 
   var TTL = {
     WEEK: function() {
@@ -28,25 +64,25 @@ this.LocalCache = (function constructor(localStorage) {
 
   function setKey(key, data, ttl) {
     if (ttl) {
-      localStorage.setItem(PREFIX+EXPIRES_KEY+key, ttl());
-      localStorage.setItem(PREFIX+ACCESS_KEY+key, Date.now());
+      patrick.setItem(PREFIX+EXPIRES_KEY+key, ttl());
+      patrick.setItem(PREFIX+ACCESS_KEY+key, Date.now());
     }
-    localStorage.setItem(PREFIX+key, data);
+    patrick.setItem(PREFIX+key, data);
   }
   function removeKey(key) {
-    localStorage.removeItem(PREFIX+EXPIRES_KEY+key);
-    localStorage.removeItem(PREFIX+ACCESS_KEY+key);
-    localStorage.removeItem(PREFIX+key);
+    patrick.removeItem(PREFIX+EXPIRES_KEY+key);
+    patrick.removeItem(PREFIX+ACCESS_KEY+key);
+    patrick.removeItem(PREFIX+key);
   }
   function loadByAccess() {
     var ret = [];
-    for (var i = 0, len = localStorage.length; i < len; i++) {
-      var key = localStorage.key(i);
+    for (var i = 0, len = patrick.length; i < len; i++) {
+      var key = patrick.key(i);
       if (EXPIRES_REGEX.test(key)) {
         key = key.substring(PREFIX.length + EXPIRES_KEY.length);
         ret.push({
           key: key,
-          access: parseInt(localStorage.getItem(PREFIX+ACCESS_KEY+key) || 0, 10)
+          access: parseInt(patrick.getItem(PREFIX+ACCESS_KEY+key) || 0, 10)
         });
       }
     }
@@ -59,10 +95,10 @@ this.LocalCache = (function constructor(localStorage) {
         toRemove = [];
 
     // Iterate over everything, scanning for anything that may be expired
-    for (var i = 0, len = localStorage.length; i < len; i++) {
-      var key = localStorage.key(i);
+    for (var i = 0, len = patrick.length; i < len; i++) {
+      var key = patrick.key(i);
       if (EXPIRES_REGEX.test(key)) {
-        if (parseInt(localStorage.getItem(key), 10) < now) {
+        if (parseInt(patrick.getItem(key), 10) < now) {
           toRemove.push(key.substring(PREFIX.length + EXPIRES_KEY.length));
         }
       }
@@ -112,7 +148,7 @@ this.LocalCache = (function constructor(localStorage) {
       }
     },
     get: function(key) {
-      var expires = localStorage.getItem(PREFIX+EXPIRES_KEY+key) || 0;
+      var expires = patrick.getItem(PREFIX+EXPIRES_KEY+key) || 0;
       if (expires && parseInt(expires, 10) < Date.now()) {
         // Kill anything that may have expired
         removeKey(key);
@@ -121,12 +157,12 @@ this.LocalCache = (function constructor(localStorage) {
 
       if (expires) {
         try {
-          localStorage.setItem(PREFIX+ACCESS_KEY+key, Date.now());
+          patrick.setItem(PREFIX+ACCESS_KEY+key, Date.now());
         } catch (err) {
           /* NOP: This may occur in private browsing mode... Playing it safe in case cached data surivives there. */
         }
       }
-      return localStorage.getItem(PREFIX+key);
+      return patrick.getItem(PREFIX+key);
     },
     remove: function(key) {
       removeKey(key);
@@ -134,8 +170,8 @@ this.LocalCache = (function constructor(localStorage) {
     invalidate: function(prefix, hard) {
       var toRemove = [];
 
-      for (var i = 0, len = localStorage.length; i < len; i++) {
-        var key = localStorage.key(i);
+      for (var i = 0, len = patrick.length; i < len; i++) {
+        var key = patrick.key(i);
         if ((hard ? ALL_REGEX : EXPIRES_REGEX).test(key)) {
           var key = key.substring(PREFIX.length + (!hard ? EXPIRES_KEY.length : 0));
           if (!prefix || key.indexOf(prefix) === 0) {
@@ -152,4 +188,4 @@ this.LocalCache = (function constructor(localStorage) {
     },
     flushExpired: flushExpired
   };
-}(localStorage));
+}());
