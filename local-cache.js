@@ -7,7 +7,8 @@ this.LocalCache = (function constructor(localStorage) {
       EXPIRES_REGEX = /^LocalCache_Expires_.*/,
       ALL_REGEX = /^LocalCache_.*/;
 
-  var dailyExpiration = 10*MS_IN_HOUR;   // Default to 2am PST
+  var dailyExpiration = 10*MS_IN_HOUR,   // Default to 2am PST
+      stubbedStorage;
 
   var TTL = {
     WEEK: function() {
@@ -26,8 +27,64 @@ this.LocalCache = (function constructor(localStorage) {
     }
   };
 
+  function isQuotaError(error) {
+    return error.name === 'QUOTA_EXCEEDED_ERR' || error.name === 'QuotaExceededError';
+  }
+
+  function checkStorage() {
+    function tryStore() {
+      localStorage.setItem('available-test', '1');
+      localStorage.removeItem('available-test');
+    }
+    try {
+      // iOS 7 betas throw a security exception when attempting to even read .localStorage
+      // This is hopefully a bug but we're coding against it to be safe.
+      localStorage = localStorage || window.localStorage;
+
+      tryStore();
+    } catch (err) {
+      if (isQuotaError(err)) {
+        try {
+          // If we have a quota error, try one more time.
+          flushExpired();
+
+          tryStore()
+
+          // We worked this time, full steam ahead.
+          return;
+        } catch (err) {
+          /* NOP */
+        }
+      }
+
+      stubStorage();
+    }
+  }
+
+  function stubStorage() {
+    stubbedStorage = true;
+    var localStorageData = {};
+    localStorage = {
+      getItem: function(name) {
+        return localStorageData[name];
+      },
+      setItem: function(name, value) {
+        localStorageData[name] = value;
+      },
+      removeItem: function(name) {
+        delete localStorageData[name];
+      }
+    };
+  }
+
   function setKey(key, data, ttl) {
     if (ttl) {
+      if (stubbedStorage) {
+        // Do not store any data that has a TTL in stubbed mode as this data is already
+        // not guaranteed, it can be quite large, and it will never be evicted.
+        return;
+      }
+
       localStorage.setItem(PREFIX+EXPIRES_KEY+key, ttl());
       localStorage.setItem(PREFIX+ACCESS_KEY+key, Date.now());
     }
@@ -74,12 +131,15 @@ this.LocalCache = (function constructor(localStorage) {
     }
   }
 
-  // Kill any expired content that may be in the cache as soon as we get the chance
-  setTimeout(flushExpired, 0);
+  checkStorage();
+  if (!stubbedStorage) {
+    // Kill any expired content that may be in the cache as soon as we get the chance
+    setTimeout(flushExpired, 0);
 
-  // And flush every hour, if we are on the same page for that long
-  // No need to run more often than that as the shortest expiration time is 1 hour
-  setInterval(flushExpired, MS_IN_HOUR);
+    // And flush every hour, if we are on the same page for that long
+    // No need to run more often than that as the shortest expiration time is 1 hour
+    setInterval(flushExpired, MS_IN_HOUR);
+  }
 
   return {
     // Exposed for unit testing purposes
@@ -100,7 +160,7 @@ this.LocalCache = (function constructor(localStorage) {
           return true;
         } catch (err) {
           // If quota drop the things that are closest to expiration out of the cache
-          if (err.name === 'QUOTA_EXCEEDED_ERR' || err.name === 'QuotaExceededError') {
+          if (isQuotaError(err)) {
             cullList = cullList || loadByAccess();
             if (cullList.length) {
               removeKey(cullList[0].key);
@@ -152,4 +212,4 @@ this.LocalCache = (function constructor(localStorage) {
     },
     flushExpired: flushExpired
   };
-}(localStorage));
+}());

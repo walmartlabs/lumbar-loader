@@ -23,6 +23,10 @@ QUnit.module('LocalCache', {
 
     this.cache = LocalCache;
     LocalCache = LocalCache.constructor(this.storage);
+
+    // Clear out counters from the quota testing
+    this.storage.setItem.reset();
+    this.storage.removeItem.reset();
   },
   teardown: function() {
     LocalCache = this.cache;
@@ -217,4 +221,40 @@ test('existing get in private mode', function() {
   this.storage.setItem = this.spy(function() { var err = new Error(); err.name = 'QUOTA_EXCEEDED_ERR'; throw err; });
 
   QUnit.equal(LocalCache.get('test2'), 'test');
+});
+
+test('private failover', function() {
+  var storage = {
+    setItem: this.spy(function(name, value) { throw new Error(); })
+  };
+
+  var cache = LocalCache.constructor(storage);
+  cache.store('test', 'test');
+  QUnit.equal(cache.get('test'), 'test');
+
+  cache.store('test2', 'test', cache.TTL.HOUR);
+  QUnit.equal(cache.get('test2'), undefined);
+
+  QUnit.equal(storage.setItem.callCount, 1);
+});
+test('quota failover recovery', function() {
+  var originalSet = this.storage.setItem,
+      storage = this.storage;
+  this.storage.setItem = this.spy(function() {
+    // Quota should die once
+    storage.setItem = originalSet;
+
+    var err = new Error();
+    err.name = 'QUOTA_EXCEEDED_ERR';
+    throw err;
+  });
+
+  var cache = LocalCache.constructor(storage);
+  cache.store('test', 'test');
+  QUnit.equal(cache.get('test'), 'test');
+
+  cache.store('test2', 'test', cache.TTL.HOUR);
+  QUnit.equal(cache.get('test2'), 'test');
+
+  QUnit.equal(storage.setItem.callCount, 6);
 });

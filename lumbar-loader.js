@@ -120,7 +120,13 @@ function preloadModules(modules) {
   }
 }
 
-var devicePixelRatio = parseFloat(sessionStorage.getItem('dpr') || window.devicePixelRatio || 1);
+var devicePixelRatio;
+try {
+  devicePixelRatio = sessionStorage.getItem('dpr')
+} catch (err) {
+  /* NOP : Ignore security exception under iOS 7 private browsing mode */
+}
+devicePixelRatio = parseFloat(devicePixelRatio || window.devicePixelRatio || 1);
 exports.devicePixelRatio = devicePixelRatio;
 function checkLoadResource(object, attr) {
   var href = lumbarLoader.loadPrefix + (object.href || object);
