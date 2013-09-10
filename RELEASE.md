@@ -2,7 +2,13 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.1.2...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.1.3...master)
+
+## v1.1.3 - September 10th, 2013
+
+- [#8](https://github.com/walmartlabs/lumbar-loader/pull/8) - Handle SecurityException under ios7 private browse ([@kpdecker](https://api.github.com/users/kpdecker)
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.1.2...v1.1.3)
 
 ## v1.1.2 - June 12th 2013
 
