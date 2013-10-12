@@ -2,7 +2,13 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.1.3...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.1.4...master)
+
+## v1.1.4 - October 12th, 2013
+
+- [#9](https://github.com/walmartlabs/lumbar-loader/pull/9) - Defer module preload ([@kpdecker](https://api.github.com/users/kpdecker))
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.1.3...v1.1.4)
 
 ## v1.1.3 - September 10th, 2013
 
