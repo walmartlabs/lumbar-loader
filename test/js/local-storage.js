@@ -223,17 +223,26 @@ setTimeout(function(){
 
 
   test('modules are preloaded', function() {
-    QUnit.expect(4);
+    this.clock = sinon.useFakeTimers();
+
+    QUnit.expect(6);
     var callCount = 0;
     Loader.loader.loadModule('module3', _.bind(function() {
       ++callCount;
+      console.log(lumbarLoadedModules);
       ok(lumbarLoadedModules.module3);
+      ok(!lumbarLoadedModules.module4);
+      ok(!lumbarLoadedModules.module5);
+
+      this.clock.tick(Loader.loader.preloadTimeout + 1);
+      this.requests[1].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
       ok(lumbarLoadedModules.module4);
       ok(!lumbarLoadedModules.module5);
     }, this));
     this.requests[0].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
-    this.requests[1].respond(200, {}, 'window.foo = (window.foo || 0) + 1;');
     QUnit.equal(callCount, 1);
+
+    this.clock.restore();
   });
 
 }, 100);
