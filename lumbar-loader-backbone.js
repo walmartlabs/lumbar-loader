@@ -13,7 +13,7 @@ module.exports.initBackboneLoader = function(loaderModule, failure) {
       return function() {
         if (lumbarLoader.isLoaded(moduleName)) {
           // The module didn't implement the proper route
-          failure && failure('missing-route', moduleName);
+          failure && failure({type: 'missing-route', moduleName: moduleName}, moduleName);
           return;
         } else if (pendingModules[moduleName]) {
           // Do not exec the backbone callback multiple times
