@@ -9,12 +9,10 @@ lumbarLoader.loadJS = function(moduleName, callback) {
           callback();
           return true;
         } catch (exception) {
-          /* NOP */
-          callback({moduleName: moduleName, type: 'javascript', exception: exception});
+          return callback({moduleName: moduleName + '.js', type: 'javascript', exception: exception});
         }
-      } else {
-        callback({moduleName: moduleName + '.js', type: 'connection', httpStatus: status});
       }
+      callback({moduleName: moduleName + '.js', type: err ? 'connection' : 'javascript', httpStatus: status});
     });
     return 1;
   }).length;

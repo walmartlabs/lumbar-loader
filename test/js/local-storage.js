@@ -40,7 +40,7 @@ setTimeout(function(){
   test('empty zero responses are connection errors', function() {
     QUnit.expect(3);
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      QUnit.equal(err, 'connection');
+      QUnit.deepEqual(err, {moduleName: 'moduleNoRoute.js', type: 'connection', httpStatus: 0});
     });
     QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(0, {}, '');
@@ -68,18 +68,20 @@ setTimeout(function(){
     QUnit.equal(LocalCache.store.callCount, 2);
   });
   test('empty responses with status are javascript errors', function() {
-    QUnit.expect(3);
+    QUnit.expect(4);
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      QUnit.equal(err, 'javascript');
+      QUnit.equal(err.moduleName, 'moduleNoRoute.js');
+      QUnit.equal(err.type, 'javascript');
     });
     QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(200, {}, '');
     QUnit.equal(LocalCache.store.callCount, 0);
   });
   test('exec errors are javascript errors', function() {
-    QUnit.expect(3);
+    QUnit.expect(4);
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      QUnit.equal(err, 'javascript');
+      QUnit.equal(err.moduleName, 'moduleNoRoute.js');
+      QUnit.equal(err.type, 'javascript');
     });
     QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(200, {}, '<foo');
@@ -91,7 +93,7 @@ setTimeout(function(){
 
     var self = this;
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      QUnit.equal(err, 'connection');
+      QUnit.deepEqual(err, {moduleName: 'moduleNoRoute.js', type: 'connection', httpStatus: 404});
 
       Loader.loader.loadModule('moduleNoRoute', function(err) {
         QUnit.equal(err, undefined);
@@ -104,7 +106,7 @@ setTimeout(function(){
     });
 
     QUnit.equal(this.requests.length, 1);
-    this.requests[0].respond(0, {}, '');
+    this.requests[0].respond(404, {}, '');
   });
 
   test('subsequent requests are ignored after success', function() {
@@ -151,10 +153,10 @@ setTimeout(function(){
 
     var self = this;
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      QUnit.equal(err, 'javascript');
+      QUnit.equal(err.type, 'javascript');
     });
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      QUnit.equal(err, 'javascript');
+      QUnit.equal(err.type, 'javascript');
     });
 
     QUnit.equal(this.requests.length, 1);
@@ -163,6 +165,7 @@ setTimeout(function(){
   });
 
   test('backbone routes are reattempted after connection failure', function() {
+    debugger;
     QUnit.expect(5);
 
     this.spy(Backbone.history, 'loadUrl');
@@ -170,6 +173,8 @@ setTimeout(function(){
     Backbone.history.navigate('module2', true);
     QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(0, {}, '');
+
+    console.log('respond!');
 
     Backbone.history.navigate('');
     Backbone.history.navigate('module2', true);
