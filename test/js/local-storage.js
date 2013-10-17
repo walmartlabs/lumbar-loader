@@ -1,3 +1,4 @@
+/*global _, Backbone, Loader, LocalCache, lumbarLoadedModules:true, lumbarLoadedResources:true, sinon */
 setTimeout(function(){
   QUnit.module("Local Storage Loader Error Handling", {
     setup: function() {
@@ -25,7 +26,7 @@ setTimeout(function(){
     QUnit.expect(4);
 
     LocalCache.get.restore();
-    this.stub(LocalCache, 'get', function() { return 'window.foo = "bar";' });
+    this.stub(LocalCache, 'get', function() { return 'window.foo = "bar";'; });
 
     Loader.loader.loadModule('moduleNoRoute', function(err) {
       QUnit.equal(err, undefined);
@@ -40,7 +41,7 @@ setTimeout(function(){
   test('empty zero responses are connection errors', function() {
     QUnit.expect(3);
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      QUnit.equal(err, 'connection');
+      QUnit.deepEqual(err, {moduleName: 'moduleNoRoute.js', type: 'connection', httpStatus: 0});
     });
     QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(0, {}, '');
@@ -68,18 +69,20 @@ setTimeout(function(){
     QUnit.equal(LocalCache.store.callCount, 2);
   });
   test('empty responses with status are javascript errors', function() {
-    QUnit.expect(3);
+    QUnit.expect(4);
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      QUnit.equal(err, 'javascript');
+      QUnit.equal(err.moduleName, 'moduleNoRoute.js');
+      QUnit.equal(err.type, 'javascript');
     });
     QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(200, {}, '');
     QUnit.equal(LocalCache.store.callCount, 0);
   });
   test('exec errors are javascript errors', function() {
-    QUnit.expect(3);
+    QUnit.expect(4);
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      QUnit.equal(err, 'javascript');
+      QUnit.equal(err.moduleName, 'moduleNoRoute.js');
+      QUnit.equal(err.type, 'javascript');
     });
     QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(200, {}, '<foo');
@@ -91,7 +94,7 @@ setTimeout(function(){
 
     var self = this;
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      QUnit.equal(err, 'connection');
+      QUnit.deepEqual(err, {moduleName: 'moduleNoRoute.js', type: 'connection', httpStatus: 404});
 
       Loader.loader.loadModule('moduleNoRoute', function(err) {
         QUnit.equal(err, undefined);
@@ -104,7 +107,7 @@ setTimeout(function(){
     });
 
     QUnit.equal(this.requests.length, 1);
-    this.requests[0].respond(0, {}, '');
+    this.requests[0].respond(404, {}, '');
   });
 
   test('subsequent requests are ignored after success', function() {
@@ -151,10 +154,10 @@ setTimeout(function(){
 
     var self = this;
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      QUnit.equal(err, 'javascript');
+      QUnit.equal(err.type, 'javascript');
     });
     Loader.loader.loadModule('moduleNoRoute', function(err) {
-      QUnit.equal(err, 'javascript');
+      QUnit.equal(err.type, 'javascript');
     });
 
     QUnit.equal(this.requests.length, 1);
@@ -229,7 +232,6 @@ setTimeout(function(){
     var callCount = 0;
     Loader.loader.loadModule('module3', _.bind(function() {
       ++callCount;
-      console.log(lumbarLoadedModules);
       ok(lumbarLoadedModules.module3);
       ok(!lumbarLoadedModules.module4);
       ok(!lumbarLoadedModules.module5);

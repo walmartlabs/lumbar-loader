@@ -5,7 +5,7 @@ window.failedModules = [];
 exports.init = function(loaderModule) {
   loaderModule.loader.initEvents();
   exports.initBackboneLoader(loaderModule, function (type, module) {
-    failedModules.push({type: type, module: module});
+    failedModules.push({type: type && type.type, module: module});
   });
   Backbone.history.start();
 };

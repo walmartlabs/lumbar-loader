@@ -98,7 +98,7 @@ function loadResources(moduleName, field, callback, create) {
     var href = checkLoadResource(object, attr);
     if (href && !lumbarLoadedResources[href]) {
       var el = create(href, function(err) {
-        if (err === 'connection') {
+        if (err && err.type === 'connection') {
           lumbarLoadedResources[href] = false;
         }
         callback(err);
