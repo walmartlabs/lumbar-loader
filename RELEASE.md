@@ -2,7 +2,22 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.1.4...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.0...master)
+
+## v1.2.0 - October 17th, 2013
+
+- [#10](https://github.com/walmartlabs/lumbar-loader/pull/10) - Include additional logging for loader error ([@kpdecker](https://api.github.com/users/kpdecker))
+
+Compatibility notes:
+- Errors from the local storage loader now return an object with a subset of:
+  - `type` One of `missing-route`, `connection` or `javascript`
+  - `moduleName` Name of the module that failed to load + `.js` or `.css` specifier
+  - `httpStatus` HTTP response code if a connection failure
+  - `exception` Exception thrown when evaluating the module's javascript
+
+  This is a breaking change for any users expecting the string error codes used previously.
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.1.4...v1.2.0)
 
 ## v1.1.4 - October 12th, 2013
 
