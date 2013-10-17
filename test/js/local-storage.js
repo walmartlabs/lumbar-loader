@@ -1,3 +1,4 @@
+/*global _, Backbone, Loader, LocalCache, lumbarLoadedModules:true, lumbarLoadedResources:true, sinon */
 setTimeout(function(){
   QUnit.module("Local Storage Loader Error Handling", {
     setup: function() {
@@ -25,7 +26,7 @@ setTimeout(function(){
     QUnit.expect(4);
 
     LocalCache.get.restore();
-    this.stub(LocalCache, 'get', function() { return 'window.foo = "bar";' });
+    this.stub(LocalCache, 'get', function() { return 'window.foo = "bar";'; });
 
     Loader.loader.loadModule('moduleNoRoute', function(err) {
       QUnit.equal(err, undefined);
@@ -165,7 +166,6 @@ setTimeout(function(){
   });
 
   test('backbone routes are reattempted after connection failure', function() {
-    debugger;
     QUnit.expect(5);
 
     this.spy(Backbone.history, 'loadUrl');
@@ -173,8 +173,6 @@ setTimeout(function(){
     Backbone.history.navigate('module2', true);
     QUnit.equal(this.requests.length, 1);
     this.requests[0].respond(0, {}, '');
-
-    console.log('respond!');
 
     Backbone.history.navigate('');
     Backbone.history.navigate('module2', true);
@@ -234,7 +232,6 @@ setTimeout(function(){
     var callCount = 0;
     Loader.loader.loadModule('module3', _.bind(function() {
       ++callCount;
-      console.log(lumbarLoadedModules);
       ok(lumbarLoadedModules.module3);
       ok(!lumbarLoadedModules.module4);
       ok(!lumbarLoadedModules.module5);
