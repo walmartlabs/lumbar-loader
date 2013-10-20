@@ -20,12 +20,12 @@
   "dependencies": {},
   "devDependencies": {
     "connect": "*",
-    "lumbar": "~2.0"
+    "lumbar": "~2.3.4"
   },
   "scripts": {
-    "prestart": "rm -rf build/*; node_modules/.bin/lumbar build test/loader-test.json ./build",
+    "prestart": "rm -rf build/*; node_modules/.bin/lumbar build --use server-scripts test/loader-test.json ./build",
     "start": "node test/server.js build 8083",
-    "pretest": "rm -rf build/*; node_modules/.bin/lumbar build test/loader-test.json ./build",
+    "pretest": "rm -rf build/*; node_modules/.bin/lumbar build --use server-scripts test/loader-test.json ./build",
     "test": "test/test.sh"
   },
   "optionalDependencies": {}
