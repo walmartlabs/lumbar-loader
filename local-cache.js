@@ -144,7 +144,7 @@ this.LocalCache = (function constructor(localStorage) {
   }
 
   checkStorage();
-  if (!stubbedStorage) {
+  if (!stubbedStorage && (typeof $serverSide === 'undefined' || !$serverSide)) {
     // Kill any expired content that may be in the cache as soon as we get the chance
     setTimeout(flushExpired, 0);
 
