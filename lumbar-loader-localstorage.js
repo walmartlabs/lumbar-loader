@@ -43,6 +43,9 @@ function loadViaXHR(href, callback) {
 
   xhr.onreadystatechange = function(){
     if (xhr.readyState === 4) {
+      // Ensure that we exec only once and do not leak.
+      xhr.onreadystatechange = NOP;
+
       var success = (xhr.status >= 200 && xhr.status < 300) || (xhr.status === 0 && xhr.responseText);
 
       if (callback(!success, xhr.responseText, xhr.status)) {
@@ -54,3 +57,5 @@ function loadViaXHR(href, callback) {
   xhr.open('GET', href, true);
   xhr.send(null);
 }
+
+function NOP() {}
