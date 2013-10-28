@@ -2,7 +2,13 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.0...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.1...master)
+
+## v1.2.1 - October 28th, 2013
+
+- [#12](https://github.com/walmartlabs/lumbar-loader/pull/12) - Cleanup xhr event handler ([@kpdecker](https://api.github.com/users/kpdecker))
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.0...v1.2.1)
 
 ## v1.2.0 - October 17th, 2013
 
