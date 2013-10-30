@@ -2,7 +2,13 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.1...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.2...master)
+
+## v1.2.2 - October 30th, 2013
+
+- Fix status key name for css loader failures - 9496058
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.1...v1.2.2)
 
 ## v1.2.1 - October 28th, 2013
 
