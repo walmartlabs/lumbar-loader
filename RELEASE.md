@@ -2,7 +2,13 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.3...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.4...master)
+
+## v1.2.4 - November 27th, 2013
+
+- Add firefox case to isQuotaError - 539ef74
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.3...v1.2.4)
 
 ## v1.2.3 - November 27th, 2013
 
