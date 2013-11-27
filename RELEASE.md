@@ -2,7 +2,13 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.2...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.3...master)
+
+## v1.2.3 - November 27th, 2013
+
+- Check for error code in quota error detect - af23cd2
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.2...v1.2.3)
 
 ## v1.2.2 - October 30th, 2013
 
