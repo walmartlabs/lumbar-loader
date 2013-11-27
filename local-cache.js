@@ -27,8 +27,12 @@ this.LocalCache = (function constructor(localStorage) {
     }
   };
 
+  // http://stackoverflow.com/questions/3027142/calculating-usage-of-localstorage-space
   function isQuotaError(error) {
-    return error.code === 22 || error.name === 'QUOTA_EXCEEDED_ERR' || error.name === 'QuotaExceededError';
+    return error.code === 22
+        || error.name === 'QUOTA_EXCEEDED_ERR'
+        || error.name === 'QuotaExceededError'
+        || error.name === 'NS_ERROR_DOM_QUOTA_REACHED';
   }
 
   function checkStorage() {
