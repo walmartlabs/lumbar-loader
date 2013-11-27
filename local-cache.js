@@ -28,7 +28,7 @@ this.LocalCache = (function constructor(localStorage) {
   };
 
   function isQuotaError(error) {
-    return error.name === 'QUOTA_EXCEEDED_ERR' || error.name === 'QuotaExceededError';
+    return error.code === 22 || error.name === 'QUOTA_EXCEEDED_ERR' || error.name === 'QuotaExceededError';
   }
 
   function checkStorage() {
