@@ -2,7 +2,13 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.4...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.5...master)
+
+## v1.2.5 - November 28th, 2013
+
+- [#13](https://github.com/walmartlabs/lumbar-loader/pull/13) - Fix DAY TTL cache expires ([@kpdecker](https://api.github.com/users/kpdecker))
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.4...v1.2.5)
 
 ## v1.2.4 - November 27th, 2013
 
