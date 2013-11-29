@@ -7,15 +7,23 @@ this.LocalCache = (function constructor(localStorage) {
       EXPIRES_REGEX = /^LocalCache_Expires_.*/,
       ALL_REGEX = /^LocalCache_.*/;
 
-  var dailyExpiration = 10*MS_IN_HOUR,   // Default to 2am PST
-      stubbedStorage;
+  var stubbedStorage;
 
   var TTL = {
     WEEK: function() {
-      return (Math.floor(Date.now()/MS_IN_DAY)+1)*MS_IN_DAY*7 + dailyExpiration;
+      return TTL.DAY() + 6*MS_IN_DAY;
     },
     DAY: function() {
-      return (Math.floor(Date.now()/MS_IN_DAY)+1)*MS_IN_DAY + dailyExpiration;
+      var date = new Date(),
+          originalDay = date.getDate(),
+          originalHours = date.getHours();
+      date.setUTCHours(10 /* 2am PST, 3am PDT */, 0, 0, 0);
+
+      // If we are after midnight but before the expires we don't want to change anything
+      if (date.getHours() <= originalHours) {
+        date.setDate(originalDay + 1);
+      }
+      return date.getTime();
     },
     HOUR: function() {
       return (Math.floor(Date.now()/MS_IN_HOUR)+1)*MS_IN_HOUR;

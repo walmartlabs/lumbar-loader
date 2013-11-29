@@ -258,3 +258,31 @@ test('quota failover recovery', function() {
 
   QUnit.equal(storage.setItem.callCount, 6);
 });
+
+QUnit.module('TTL');
+
+test('day', function() {
+  var start = new Date('01 Jan 2014 02:00:00 GMT-0800 (PST)'),
+      expected = new Date('02 Jan 2014 02:00:00 GMT-0800 (PST)');
+
+  this.clock.now = start.getTime();
+
+  for (var i = 0; i < 24*60*60*1000; i += 799000) {
+    this.clock.now = start.getTime() + i;
+    QUnit.equal(LocalCache.TTL.DAY(), expected.getTime());
+  }
+  this.clock.restore();
+});
+
+test('hour', function() {
+  var start = new Date('01 Jan 2014 02:00:00 GMT-0800 (PST)'),
+      expected = new Date('01 Jan 2014 03:00:00 GMT-0800 (PST)');
+
+  this.clock.now = start.getTime();
+
+  for (var i = 0; i < 60*60*1000; i += 79900) {
+    this.clock.now = start.getTime() + i;
+    QUnit.equal(LocalCache.TTL.HOUR(), expected.getTime());
+  }
+  this.clock.restore();
+});
