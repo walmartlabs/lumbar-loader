@@ -85,7 +85,7 @@ var lumbarLoadedModules = {},
       css: 'href'
     };
 function loadResources(moduleName, field, callback, create) {
-  var module = moduleName === 'base' ? lumbarLoader.map.base : lumbarLoader.modules[moduleName], // Special case for the base case
+  var module = (moduleName === 'base' && lumbarLoader.map.base) || lumbarLoader.modules[moduleName], // Special case for the base case
       loaded = [],
       attr = fieldAttr[field];
   field = module[field] || [];
