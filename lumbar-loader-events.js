@@ -20,7 +20,7 @@
       if (!options.silent && !loaded) {
         lumbarLoader.trigger && lumbarLoader.trigger('load:end', lumbarLoader);
       }
-      callback(error);
+      callback && callback(error);
     }, options);
   };
 }());
