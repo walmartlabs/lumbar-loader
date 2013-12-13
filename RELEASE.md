@@ -2,7 +2,14 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.5...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.6...master)
+
+## v1.2.6 - December 13th, 2013
+
+- Allow loading without a callback - a10c85d
+- Fix loading of non-application base module - 78f6005
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.5...v1.2.6)
 
 ## v1.2.5 - November 28th, 2013
 
