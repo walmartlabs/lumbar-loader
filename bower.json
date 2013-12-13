@@ -1,6 +1,6 @@
 {
   "name": "lumbar-loader",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "main": [
     "lumbar-loader.js",
     "lumbar-loader-standard.js"
