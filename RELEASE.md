@@ -2,7 +2,12 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.6...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.3.0...master)
+
+## v1.3.0 - January 13th, 2014
+- Use Costanza for module loading if available - 5e231de
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.2.6...v1.3.0)
 
 ## v1.2.6 - December 13th, 2013
 
