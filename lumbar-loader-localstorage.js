@@ -1,5 +1,5 @@
 /*jshint evil: true */
-/*global LocalCache, exports, loadResources, lumbarLoader */
+/*global Costanza, LocalCache, exports, loadResources, lumbarLoader */
 lumbarLoader.loadJS = function(moduleName, callback) {
   return loadResources(moduleName, 'js', callback, function(href, callback) {
     loadViaXHR(href, function(err, data, status) {
@@ -41,7 +41,7 @@ function loadViaXHR(href, callback) {
 
   var xhr = new XMLHttpRequest();
 
-  xhr.onreadystatechange = function(){
+  function handler(){
     if (xhr.readyState === 4) {
       // Ensure that we exec only once and do not leak.
       xhr.onreadystatechange = NOP;
@@ -52,7 +52,8 @@ function loadViaXHR(href, callback) {
         LocalCache.store(href, xhr.responseText, LocalCache.TTL.WEEK);
       }
     }
-  };
+  }
+  xhr.onreadystatechange = window.Costanza ? Costanza.bind('loader-xhr', handler) : handler;
 
   xhr.open('GET', href, true);
   xhr.send(null);
