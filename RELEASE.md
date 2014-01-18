@@ -2,7 +2,12 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.3.0...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.3.1...master)
+
+## v1.3.1 - January 18th, 2014
+- [#14](https://github.com/walmartlabs/lumbar-loader/pull/14) - Fix pixel ratio detection in IE ([@Candid](https://api.github.com/users/Candid))
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.3.0...v1.3.1)
 
 ## v1.3.0 - January 13th, 2014
 - Use Costanza for module loading if available - 5e231de
