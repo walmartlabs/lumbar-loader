@@ -1,5 +1,8 @@
 /*jshint loopfunc:true */
 /*global exports, lumbarLoadPrefix */
+
+var $serverSide = typeof $serverSide !== 'undefined' && $serverSide;
+
 var lumbarLoader = exports.loader = {
   loadPrefix: typeof lumbarLoadPrefix === 'undefined' ? '' : lumbarLoadPrefix,
   preloadTimeout: 5000,
@@ -36,7 +39,7 @@ var lumbarLoader = exports.loader = {
       loadCount++;
       if (error || (allInit && loadCount >= expected)) {
         lumbarLoadedModules[moduleName] = !error;
-        if (moduleInfo && moduleInfo.preload && !options.silent) {
+        if (moduleInfo && moduleInfo.preload && !options.silent && !$serverSide) {
           setTimeout(function() {
             preloadModules(moduleInfo.preload);
           }, lumbarLoader.preloadTimeout);
