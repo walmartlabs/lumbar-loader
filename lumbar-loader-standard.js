@@ -20,7 +20,7 @@ lumbarLoader.loadCSS = function(moduleName, callback) {
       var i = loaded.length;
       while (i--) {
         var sheet = loaded[i];
-        if ((sheet.sheet && ('length' in sheet.sheet.cssRules)) || (sheet.styleSheet && sheet.styleSheet.cssText)) {
+        if (sheet.sheet || sheet.styleSheet) {
           loaded.splice(i, 1);
           callback();
         }
