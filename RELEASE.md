@@ -2,7 +2,16 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.3.1...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.0.0...master)
+
+## v2.0.0 - February 10th, 2014
+- [#11](https://github.com/walmartlabs/lumbar-loader/pull/11) - Server side execution updates ([@kpdecker](https://api.github.com/users/kpdecker))
+- Relax style loaded check - 0ba4d68
+
+Compatibility notes:
+- Clients must be building with the lumbar server plugin enabled. This is enabled by default in lumbar 2.4.0 and higher.
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v1.3.1...v2.0.0)
 
 ## v1.3.1 - January 18th, 2014
 - [#14](https://github.com/walmartlabs/lumbar-loader/pull/14) - Fix pixel ratio detection in IE ([@Candid](https://api.github.com/users/Candid))
