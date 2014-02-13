@@ -2,7 +2,12 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.0.0...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.0.1...master)
+
+## v2.0.1 - February 13th, 2014
+- Fix $serverSide failover declaration - db25815
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.0.0...v2.0.1)
 
 ## v2.0.0 - February 10th, 2014
 - [#11](https://github.com/walmartlabs/lumbar-loader/pull/11) - Server side execution updates ([@kpdecker](https://api.github.com/users/kpdecker))
