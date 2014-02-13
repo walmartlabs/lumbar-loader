@@ -1,7 +1,7 @@
 /*jshint loopfunc:true */
 /*global exports, lumbarLoadPrefix */
 
-var $serverSide = typeof $serverSide !== 'undefined' && $serverSide;
+this.$serverSide = typeof this.$serverSide !== 'undefined' && this.$serverSide;
 
 var lumbarLoader = exports.loader = {
   loadPrefix: typeof lumbarLoadPrefix === 'undefined' ? '' : lumbarLoadPrefix,
