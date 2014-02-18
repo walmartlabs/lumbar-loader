@@ -43,6 +43,13 @@ this.LocalCache = (function constructor(localStorage) {
         || error.name === 'NS_ERROR_DOM_QUOTA_REACHED';
   }
 
+  function isStorageBug(error) {
+    // IE stores localStorage as XML internally, as a result, some
+    // characters cause this error to be thrown. We ignore if there
+    // is a ttl set - which indicates that it is not actual content
+    return error.description === 'Invalid Argument.'
+  }
+
   function checkStorage() {
     function tryStore() {
       localStorage.setItem('available-test', '1');
@@ -177,11 +184,7 @@ this.LocalCache = (function constructor(localStorage) {
             if (cullList.length) {
               removeKey(cullList[0].key);
             }
-          }
-          // IE stores localStorage as XML internally, as a result, some
-          // characters cause this error to be thrown. We ignore if there
-          // is a ttl set - which indicates that it is not actual content
-          else if (err.description !== 'Invalid Argument.' && ttl) {
+          } else if (!isStorageBug(err) || (isStorageBug(err) && ttl)) {
             throw err;
           }
         }
