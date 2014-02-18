@@ -60,7 +60,7 @@ this.LocalCache = (function constructor(localStorage) {
           // If we have a quota error, try one more time.
           flushExpired();
 
-          tryStore()
+          tryStore();
 
           // We worked this time, full steam ahead.
           return;
@@ -177,7 +177,11 @@ this.LocalCache = (function constructor(localStorage) {
             if (cullList.length) {
               removeKey(cullList[0].key);
             }
-          } else {
+          }
+          // IE stores localStorage as XML internally, as a result, some
+          // characters cause this error to be thrown. We ignore if there
+          // is a ttl set - which indicates that it is not actual content
+          else if (err.description !== 'Invalid Argument.' && ttl) {
             throw err;
           }
         }
