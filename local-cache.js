@@ -45,8 +45,7 @@ this.LocalCache = (function constructor(localStorage) {
 
   function isStorageBug(error) {
     // IE stores localStorage as XML internally, as a result, some
-    // characters cause this error to be thrown. We ignore if there
-    // is a ttl set - which indicates that it is not actual content
+    // characters cause this error to be thrown. 
     return error.description === 'Invalid Argument.'
   }
 
@@ -184,7 +183,8 @@ this.LocalCache = (function constructor(localStorage) {
             if (cullList.length) {
               removeKey(cullList[0].key);
             }
-          } else if (!isStorageBug(err) || (isStorageBug(err) && ttl)) {
+          // We ignore if there is a ttl set - which indicates that it is not actual content
+          } else if (!isStorageBug(err) || !ttl) {
             throw err;
           }
         }
