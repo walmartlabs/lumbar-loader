@@ -183,7 +183,8 @@ this.LocalCache = (function constructor(localStorage) {
             if (cullList.length) {
               removeKey(cullList[0].key);
             }
-          // We ignore if there is a ttl set - which indicates that it is not actual content
+
+          // We ignore if there is a ttl set - which indicates that it is not persistent content
           } else if (!isStorageBug(err) || !ttl) {
             throw err;
           }
