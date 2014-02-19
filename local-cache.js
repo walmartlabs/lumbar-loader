@@ -43,6 +43,12 @@ this.LocalCache = (function constructor(localStorage) {
         || error.name === 'NS_ERROR_DOM_QUOTA_REACHED';
   }
 
+  function isStorageBug(error) {
+    // IE stores localStorage as XML internally, as a result, some
+    // characters cause this error to be thrown. 
+    return error.description === 'Invalid Argument.'
+  }
+
   function checkStorage() {
     function tryStore() {
       localStorage.setItem('available-test', '1');
@@ -60,7 +66,7 @@ this.LocalCache = (function constructor(localStorage) {
           // If we have a quota error, try one more time.
           flushExpired();
 
-          tryStore()
+          tryStore();
 
           // We worked this time, full steam ahead.
           return;
@@ -177,7 +183,8 @@ this.LocalCache = (function constructor(localStorage) {
             if (cullList.length) {
               removeKey(cullList[0].key);
             }
-          } else {
+          // We ignore if there is a ttl set - which indicates that it is not actual content
+          } else if (!isStorageBug(err) || !ttl) {
             throw err;
           }
         }
