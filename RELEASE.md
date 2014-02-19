@@ -2,7 +2,12 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.0.1...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.0.2...master)
+
+## v2.0.2 - February 19th, 2014
+- [#16](https://github.com/walmartlabs/lumbar-loader/pull/16) - ignore "Invalid Arguments" error when IE tries to `setItem` with certain ([@patrickkettner](https://api.github.com/users/patrickkettner))
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.0.1...v2.0.2)
 
 ## v2.0.1 - February 13th, 2014
 - Fix $serverSide failover declaration - db25815
