@@ -137,7 +137,10 @@ exports.devicePixelRatio = devicePixelRatio;
 function checkLoadResource(object, attr) {
   var href = lumbarLoader.loadPrefix + (object.href || object);
   if ((!object.maxRatio || devicePixelRatio < object.maxRatio) && (!object.minRatio || object.minRatio <= devicePixelRatio)) {
-    if (document.querySelector('[' + attr + '="' + href + '"]')) {
+    var query = '[' + attr + '="' + href + '"]';
+    // If we are in fruit-loops without full DOM support then we want to use $, which we are
+    // assuming is available.
+    if (document.querySelector ? document.querySelector(query) : $(query).length) {
       return;
     }
 
