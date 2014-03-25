@@ -17,14 +17,16 @@ QUnit.asyncTest('load base', function() {
 
   QUnit.equal(undefined, window.LoaderTest, 'Core application module is not loaded');
   Loader.loader.loadModule('base', function(err) {
-    QUnit.notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
-    QUnit.equal(document.styleSheets.length, 2, 'Core application stylesheet is loaded');
-    QUnit.equal(getSelector(1, 0), '.base', 'stylesheet is QUnit.expected');
-    QUnit.equal(err, undefined);
+    setTimeout(function() {
+      QUnit.notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
+      QUnit.equal(document.styleSheets.length, 2, 'Core application stylesheet is loaded');
+      QUnit.equal(getSelector(1, 0), '.base', 'stylesheet is QUnit.expected');
+      QUnit.equal(err, undefined);
 
-    LoaderTest.init(module.exports);
+      LoaderTest.init(module.exports);
 
-    QUnit.start();
+      QUnit.start();
+    }, 0);
   });
   QUnit.equal(undefined, window.LoaderTest, 'Core application module is not loaded');
 });
@@ -79,7 +81,9 @@ lumbarLoader.loadComplete = function(name) {
     Backbone.history.navigate('module1', true);
   });
   QUnit.asyncTest('load moduleNoRoute', function() {
-    QUnit.expect(9);
+    Backbone.history.loadUrl('foo');
+
+    QUnit.expect(8);
     QUnit.stop(2);    // Add additional stops for the two QUnit.expected load events
 
     QUnit.notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
@@ -100,7 +104,6 @@ lumbarLoader.loadComplete = function(name) {
       runCount || setTimeout(function() {
         QUnit.equal(runCount, 2, 'route event occurs only twice');
 
-        QUnit.equal('moduleNoRoute', fragment, 'Fragment is correct module');
         QUnit.notEqual(window.LoaderTest.moduleNoRoute, undefined, 'module is loaded');
 
         QUnit.deepEqual(window.failedModules, [
