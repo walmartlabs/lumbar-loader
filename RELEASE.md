@@ -2,7 +2,12 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.0.4...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.0.5...master)
+
+## v2.0.5 - April 1st, 2014
+- Update to latest test libs - b805b7b
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.0.4...v2.0.5)
 
 ## v2.0.4 - March 17th, 2014
 - [#18](https://github.com/walmartlabs/lumbar-loader/pull/18) - Argument !== argument ([@patrickkettner](https://api.github.com/users/patrickkettner))
