@@ -136,12 +136,15 @@ devicePixelRatio = parseFloat(devicePixelRatio || window.devicePixelRatio || (wi
 exports.devicePixelRatio = devicePixelRatio;
 function checkLoadResource(object, attr) {
   var href = lumbarLoader.loadPrefix + (object.href || object),
-      queryHref = href.replace(/^.*?:\/\/.*?\//, '');
+
+      // Strip the server component, if one exists
+      pathname = href.replace(/^.*?:\/\/.*?\//, '');
+
   if ((!object.maxRatio || devicePixelRatio < object.maxRatio) && (!object.minRatio || object.minRatio <= devicePixelRatio)) {
     // Search for the suffix without the server information, if href includes it. In effect we are
     // treating https://foo/bar as the same as /bar. There is the possibilty of conflict here, but
     // this is relatively unlikely.
-    var query = '[data-lumbar][' + attr + '$="' + queryHref + '"]';
+    var query = '[data-lumbar][' + attr + '$="' + pathname + '"]';
 
     // If we are in fruit-loops without full DOM support then we want to use $, which we are
     // assuming is available.
