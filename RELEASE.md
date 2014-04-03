@@ -2,7 +2,12 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.0.5...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.0.6...master)
+
+## v2.0.6 - April 3rd, 2014
+- [#19](https://github.com/walmartlabs/lumbar-loader/pull/19) - Treat paths as equal when loading qualified prefix ([@kpdecker](https://api.github.com/users/kpdecker))
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.0.5...v2.0.6)
 
 ## v2.0.5 - April 1st, 2014
 - Update to latest test libs - b805b7b
