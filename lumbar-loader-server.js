@@ -7,7 +7,7 @@ lumbarLoader.loadJS = function(moduleName, callback, options) {
 };
 lumbarLoader.loadCSS = function(moduleName, callback, options) {
   loadResources(moduleName, 'css', callback, function(href) {
-    $('head').append('<link rel="stylesheet" href="' + href + '">');
+    $('head').append('<link rel="stylesheet" href="' + href + '" data-lumbar="true">');
   });
 
   return 0;
