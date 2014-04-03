@@ -1,5 +1,5 @@
 /*jshint loopfunc:true */
-/*global exports, lumbarLoadPrefix */
+/*global $, $serverSide, exports, lumbarLoadPrefix */
 
 this.$serverSide = typeof this.$serverSide !== 'undefined' && this.$serverSide;
 
@@ -128,7 +128,7 @@ function preloadModules(modules) {
 
 var devicePixelRatio;
 try {
-  devicePixelRatio = sessionStorage.getItem('dpr')
+  devicePixelRatio = sessionStorage.getItem('dpr');
 } catch (err) {
   /* NOP : Ignore security exception under iOS 7 private browsing mode */
 }
