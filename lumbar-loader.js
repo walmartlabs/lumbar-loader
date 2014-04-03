@@ -144,7 +144,9 @@ function checkLoadResource(object, attr) {
     // Search for the suffix without the server information, if href includes it. In effect we are
     // treating https://foo/bar as the same as /bar. There is the possibilty of conflict here, but
     // this is relatively unlikely.
-    var query = '[data-lumbar][' + attr + '$="' + pathname + '"]';
+    // The second clause checks for explicit references to this resource that do not have the
+    // data-lumbar flag applied to them. This allows the most ammount of flexibility for consumers.
+    var query = '[data-lumbar][' + attr + '$="' + pathname + '"],[' + attr + '="' + href + '"]';
 
     // If we are in fruit-loops without full DOM support then we want to use $, which we are
     // assuming is available.
