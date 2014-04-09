@@ -2,7 +2,12 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.0.7...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.1.0...master)
+
+## v2.1.0 - April 8th, 2014
+- [#20](https://github.com/walmartlabs/lumbar-loader/pull/20) - append sourceUrl to evaled scripts, so they show up in debugging tools ([@patrickkettner](https://api.github.com/users/patrickkettner))
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.0.7...v2.1.0)
 
 ## v2.0.7 - April 3rd, 2014
 - Add checkout for specific href w/o data-lumbar - 2acb311
