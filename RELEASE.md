@@ -2,7 +2,12 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.1.0...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.1.1...master)
+
+## v2.1.1 - April 10th, 2014
+- Propagate options to depends loads - 0dc10a4
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.1.0...v2.1.1)
 
 ## v2.1.0 - April 8th, 2014
 - [#20](https://github.com/walmartlabs/lumbar-loader/pull/20) - append sourceUrl to evaled scripts, so they show up in debugging tools ([@patrickkettner](https://api.github.com/users/patrickkettner))
