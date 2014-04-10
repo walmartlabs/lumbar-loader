@@ -65,7 +65,9 @@ var lumbarLoader = exports.loader = {
       var dep = moduleInfo.depends,
           queue = self.queue();
       for (var i=0; i<dep.length; i++) {
-        queue.defer(lumbarLoader.loadModule, dep[i]);
+        queue.defer(function(dependency, callback) {
+          lumbarLoader.loadModule(dependency, callback, options);
+        }, dep[i]);
       }
       queue.awaitAll(loadResources);
     } else {
