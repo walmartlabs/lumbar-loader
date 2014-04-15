@@ -5,7 +5,7 @@ lumbarLoader.loadJS = function(moduleName, callback) {
     loadViaXHR(href, function(err, data, status) {
       if (!err && data) {
         try {
-          data += "\n//#sourceURL=" + href;
+          data += "\n//# sourceURL=" + href;
           window.eval(data);
           callback();
           return true;
