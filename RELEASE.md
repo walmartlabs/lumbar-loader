@@ -2,7 +2,12 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.1.1...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.1.2...master)
+
+## v2.1.2 - April 21st, 2014
+- [#21](https://github.com/walmartlabs/lumbar-loader/pull/21) - sourceURL requires space after hash ([@patrickkettner](https://api.github.com/users/patrickkettner))
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.1.1...v2.1.2)
 
 ## v2.1.1 - April 10th, 2014
 - Propagate options to depends loads - 0dc10a4
