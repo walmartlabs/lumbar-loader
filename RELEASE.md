@@ -2,7 +2,12 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.1.2...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.1.3...master)
+
+## v2.1.3 - May 20th, 2014
+- Protect from envs that do not have screen object - a4c626e
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.1.2...v2.1.3)
 
 ## v2.1.2 - April 21st, 2014
 - [#21](https://github.com/walmartlabs/lumbar-loader/pull/21) - sourceURL requires space after hash ([@patrickkettner](https://api.github.com/users/patrickkettner))
