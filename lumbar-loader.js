@@ -134,7 +134,7 @@ try {
 } catch (err) {
   /* NOP : Ignore security exception under iOS 7 private browsing mode */
 }
-devicePixelRatio = parseFloat(devicePixelRatio || window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI) || 1);
+devicePixelRatio = parseFloat(devicePixelRatio || window.devicePixelRatio || (window.screen && (window.screen.deviceXDPI / window.screen.logicalXDPI)) || 1);
 exports.devicePixelRatio = devicePixelRatio;
 function checkLoadResource(object, attr) {
   var href = lumbarLoader.loadPrefix + (object.href || object),
