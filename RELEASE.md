@@ -2,7 +2,13 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.1.3...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.1.4...master)
+
+## v2.1.4 - September 9th, 2014
+- Remove old css modules on remap - c2a01c8
+- Update for latest FruitLoops API - 4ccce07
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.1.3...v2.1.4)
 
 ## v2.1.3 - May 20th, 2014
 - Protect from envs that do not have screen object - a4c626e
