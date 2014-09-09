@@ -21,7 +21,7 @@ lumbarLoader.loadJS = function(moduleName, callback) {
 lumbarLoader.loadCSS = function(moduleName, callback) {
   return loadResources(moduleName, 'css', callback, function(href) {
     loadViaXHR(href, function(err, data, status) {
-      data && exports.loader.loadInlineCSS(data);
+      data && exports.loader.loadInlineCSS(data, moduleName);
       callback(err ? {moduleName: moduleName + '.css', type: 'connection', httpStatus: status} : undefined);
       return !err;
     });

@@ -12,7 +12,7 @@ lumbarLoader.loadCSS = function(moduleName, callback) {
     link.rel = 'stylesheet';
     link.type = 'text/css';
     link.href = href;
-    link.setAttribute('data-lumbar', 'true');
+    link.setAttribute('data-lumbar', moduleName);
     return link;
   });
 

@@ -5,6 +5,7 @@ this.$serverSide = typeof this.$serverSide !== 'undefined' && this.$serverSide;
 
 var lumbarLoader = exports.loader = {
   loadPrefix: typeof lumbarLoadPrefix === 'undefined' ? '' : lumbarLoadPrefix,
+  originalLoadPrefix: typeof lumbarLoadPrefix === 'undefined' ? '' : lumbarLoadPrefix,
   preloadTimeout: 5000,
 
   isLoaded: function(moduleName) {
@@ -75,8 +76,11 @@ var lumbarLoader = exports.loader = {
     }
   },
 
-  loadInlineCSS: function(content) {
+  loadInlineCSS: function(content, moduleName) {
     var style = document.createElement('style');
+    if (moduleName) {
+      style.setAttribute('data-lumbar', moduleName);
+    }
     style.textContent = content;
     appendResourceElement(style);
     return style;
@@ -108,6 +112,15 @@ function loadResources(moduleName, field, callback, create) {
         }
         callback(err);
       });
+
+      // Check to see if there are any older versions sitting around from a remap
+      if (attr === 'href' && lumbarLoader.originalLoadPrefix !== lumbarLoader.loadPrefix) {
+        var existing = document.querySelector('[data-lumbar="' + moduleName + '"]');
+        if (existing) {
+          existing.parentNode.removeChild(existing);
+        }
+      }
+
       lumbarLoadedResources[href] = true;
       if (el && el.nodeType === 1) {
         appendResourceElement(el);
