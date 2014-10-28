@@ -1,3 +1,7 @@
+Date.now = Date.now || function now() {
+  return new Date().getTime();
+};
+
 this.LocalCache = (function constructor(localStorage) {
   var MS_IN_HOUR = 3600000,   // 60*60*1000
       MS_IN_DAY = 24*MS_IN_HOUR,
