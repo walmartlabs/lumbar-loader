@@ -2,7 +2,12 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.1.4...master)
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.1.5...master)
+
+## v2.1.5 - October 27th, 2014
+- [#22](https://github.com/walmartlabs/lumbar-loader/pull/22) - polyfill Date.now ([@patrickkettner](https://api.github.com/users/patrickkettner))
+
+[Commits](https://github.com/walmartlabs/lumbar-loader/compare/v2.1.4...v2.1.5)
 
 ## v2.1.4 - September 9th, 2014
 - Remove old css modules on remap - c2a01c8
