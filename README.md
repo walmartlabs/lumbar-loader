@@ -154,7 +154,7 @@ must be explicitly called after backbone has been loaded.
 This mixin adds the following backbone events to the loader object:
 
  * `load:start` : Emitted at the start of a module load. The module name is passed as the first parameter.
- * `load:end` : Emitted after all resources have been loaded for a given module. The module name is passed as the first parameter.
+ * `load:end` : Emitted after all resources have been loaded for a given module. The loader is passed as the first parameter.
 
 
 ### Module Load Performance Mixin
