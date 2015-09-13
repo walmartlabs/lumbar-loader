@@ -51,7 +51,7 @@ lumbarLoader.loadComplete = function(name) {
     }
   });
   QUnit.asyncTest('load module1', function() {
-    QUnit.expect(10);
+    QUnit.expect(12);
     QUnit.stop(2);    // Add additional stops for the two QUnit.expected load events
 
     QUnit.notEqual(window.LoaderTest, undefined, 'Core application module is loaded');
@@ -64,6 +64,16 @@ lumbarLoader.loadComplete = function(name) {
     });
     Loader.loader.bind('load:end', function(object) {
       QUnit.equal(object, Loader.loader, 'Load end occurred');
+      QUnit.start();
+    });
+
+    Loader.loader.bind('load:start:module1', function(object) {
+      QUnit.equal(object, Loader.loader, 'Load start for module1 occurred');
+      QUnit.start();
+    });
+
+    Loader.loader.bind('load:end:module1', function(object) {
+      QUnit.equal(object, Loader.loader, 'Load end for module1 occurred');
       QUnit.start();
     });
 

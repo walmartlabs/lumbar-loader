@@ -14,11 +14,13 @@
 
     var loaded = lumbarLoader.isLoaded(moduleName);
     if (!options.silent && !loaded) {
-      lumbarLoader.trigger && lumbarLoader.trigger('load:start', moduleName, undefined, lumbarLoader);
+      lumbarLoader.trigger && lumbarLoader.trigger('load:start', moduleName, undefined, lumbarLoader)
+          .trigger("load:start:" + moduleName, lumbarLoader);
     }
     baseLoadModule(moduleName, function(error) {
       if (!options.silent && !loaded) {
-        lumbarLoader.trigger && lumbarLoader.trigger('load:end', lumbarLoader);
+        lumbarLoader.trigger && lumbarLoader.trigger('load:end', lumbarLoader)
+            .trigger("load:end:" + moduleName, lumbarLoader);
       }
       callback && callback(error);
     }, options);

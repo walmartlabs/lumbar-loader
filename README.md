@@ -156,6 +156,11 @@ This mixin adds the following backbone events to the loader object:
  * `load:start` : Emitted at the start of a module load. The module name is passed as the first parameter.
  * `load:end` : Emitted after all resources have been loaded for a given module. The module name is passed as the first parameter.
 
+Additional convenience events, which include the module name:
+
+ * `load:start:moduleName` : Emitted at the start of a module load. The loader is passed as first parameter.
+ * `load:end:moduleName` : Emitted after all resources have been loaded for a given module. The loader is passed as first parameter.
+
 
 ### Module Load Performance Mixin
 
